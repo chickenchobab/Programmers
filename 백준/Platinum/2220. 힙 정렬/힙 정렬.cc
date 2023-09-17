@@ -21,26 +21,9 @@ void push(int x){
     s++;
 }
 
-int pop(){
-    int i, child;
-    int front, back;
-
-    front=heap[1];
-    back=heap[s--];
-    for(i =1; i*2<=s; i=child){
-        child=i*2;
-        if(child!=s && heap[child+1]>heap[child])
-            child++;
-        if(back>heap[child])
-            heap[i]=heap[child];
-        else
-            back;
-    }
-    heap[i]=back;
-    return front;
-}
-
 int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(0); cout.tie(0);
     cin>>n;
     for(int i=1;i<=n;i++){
         push(i);

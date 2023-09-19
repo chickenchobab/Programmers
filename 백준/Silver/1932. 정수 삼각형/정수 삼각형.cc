@@ -4,7 +4,7 @@
 using namespace std;
 
 int n;
-long long d[501][502];
+long long dp[501][501];
 
 int main(){
     ios::sync_with_stdio(false);
@@ -12,17 +12,16 @@ int main(){
     cin>>n;
 
     int tmp;
-    for(int i=1; i<=n; i++){
-        for(int j=1;j<=i;j++){
+
+    for(int i=1;i<=n;i++){
+        for(int j=1; j<=i; j++){
             cin>>tmp;
-            d[i][j]=max(d[i-1][j-1],d[i-1][j])+tmp;
+            if(j==1) dp[i][j]=dp[i-1][1]+tmp;
+            if(j==i) dp[i][j]=dp[i-1][j-1]+tmp;
+            else dp[i][j]=max(dp[i-1][j],dp[i-1][j-1])+tmp;
         }
     }
-    int m=0;
-    for(int i=1;i<=n;i++){
-        if(m<d[n][i]) m=d[n][i];
-    }
 
-    cout<<m;
-
+    sort(dp[n]+1, dp[n]+n+1);
+    cout<<dp[n][n];
 }

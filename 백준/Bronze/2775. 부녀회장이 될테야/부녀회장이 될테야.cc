@@ -5,21 +5,21 @@ using namespace std;
 
 int t,n,k;
 int dp[15][15];
+int p(int a, int b){
+    if(dp[a][b]) return dp[a][b];
+    if(b==1) return dp[a][b]=1;
+    if(a==0) return dp[a][b]=b;
+    return (dp[a][b]=p(a-1,b)+p(a,b-1));
+}
 
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
     cin>>t;
     fill(&dp[0][0], &dp[14][14],0);
-    for(int i=0;i<=14;i++){
-        for(int j=1;j<=14;j++){
-            if(i==0) dp[i][j]=dp[i][j-1]+j;
-            else dp[i][j]=dp[i-1][j]+dp[i][j-1];
-        }
-    }
     
     while(t--){
         cin>>n>>k;
-        cout<<dp[n][k]-dp[n][k-1]<<'\n';
+        cout<<p(n,k)<<'\n';
     }
 }

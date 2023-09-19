@@ -4,22 +4,8 @@ using namespace std;
 
 int t,x,a[41],b[41],dp[41];
 
-int fibonacci(int n) {
-    if(dp[n]) {
-        return dp[n];
-    }
-    if (n == 0) {  
-        return dp[0]=0;
-    } else if (n == 1) {
-        
-        return dp[1]=1;
-    }
-    else {
-        return dp[n]=fibonacci(n-1) + fibonacci(n-2);
-    }
-}
-
 int main(){
+    ios::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
     cin>>t;
     while(t--){

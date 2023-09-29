@@ -5,13 +5,16 @@
 
 using namespace std;
 
-typedef priority_queue<int, vector<int>, greater<int>> heap;
+//typedef priority_queue<int, vector<int>, greater<int>> heap;
 int n,m,a,b;
 vector<int> graph[33333];
-heap pq;
+priority_queue<int, vector<int>, greater<int>> pq;
 int ind[33333];
 
 int main(){
+
+    ios::sync_with_stdio(false);
+    cin.tie(0); cout.tie(0);
 
     cin>>n>>m;
     while(m--){

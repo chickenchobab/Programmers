@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int n, arr[1001],d1[1001],d2[1001],dp[1001][1001];
+int n, arr[1001],d1[1001],d2[1001];
 
 int main(){
     cin>>n;

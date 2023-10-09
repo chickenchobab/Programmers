@@ -1,11 +1,11 @@
 #include <iostream>
-#include <vector>
+#include <deque>
 
 using namespace std;
 
 int n,k;
 char ch;
-vector<char> v;
+deque<char> v;
 
 int main(){
 

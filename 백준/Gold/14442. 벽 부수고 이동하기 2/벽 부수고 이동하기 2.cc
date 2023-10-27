@@ -2,30 +2,30 @@
 #include <algorithm>
 #include <queue>
 #include <string>
-#include <cstdio>
+#include <tuple>
 
 using namespace std;
 
-typedef pair<int,int> p;
+typedef tuple<int,int,int> p;
 int n,m,k,map[1001][1001];
 int visited[1001][1001], di[]={1,-1,0,0}, dj[]={0,0,1,-1};
-queue<pair<p,int>> q;
+queue<p> q;
 int step;
 
 int bfs(){
-    q.push({{1,1},k});
+    q.push({1,1,k});
     visited[1][1]=k;
 
     while(!q.empty()){
         step++;
         int stepcnt = q.size();
         while(stepcnt--){
-            pair<p,int> tmp=q.front();
+            p tmp=q.front();
             q.pop();
 
-            int i=tmp.first.first;
-            int j=tmp.first.second;
-            int chance = tmp.second;
+            int i=get<0>(tmp);
+            int j=get<1>(tmp);
+            int chance = get<2>(tmp);
 
             if(i==n && j==m) return step;
             for(int d=0;d<4;d++){
@@ -35,12 +35,12 @@ int bfs(){
                     if(chance==0) continue;
                     if(visited[ni][nj]>=chance-1) continue;
                     visited[ni][nj]=chance-1;
-                    q.push({{ni,nj},chance-1});
+                    q.push({ni,nj,chance-1});
                 }
                 else {
                     if(visited[ni][nj]>=chance) continue;
                     visited[ni][nj]=chance;
-                    q.push({{ni,nj},chance});
+                    q.push({ni,nj,chance});
                 }
             }
         }

@@ -13,13 +13,14 @@ queue<pair<p,int>> q;
 
 int bfs(){
     q.push({{1,1},0});
-    visited[1][1][0]=0;  
+    visited[1][1][0]=1;  
     while(!q.empty()){
         pair<p,int> tmp=q.front();
         q.pop();
         int i=tmp.first.first;
         int j=tmp.first.second;
         int block=tmp.second;
+        if(i==n && j==m) return visited[i][j][block];
         for(int d=0;d<4;d++){
             int ni=i+di[d], nj=j+dj[d];
             if(ni>n || ni<1 || nj>m || nj<1) continue;
@@ -28,16 +29,13 @@ int bfs(){
                 visited[ni][nj][1]=visited[i][j][block]+1;
                 q.push({{ni,nj},1});
             }
-            else if(visited[ni][nj][block]==-1){
+            else if(visited[ni][nj][block]==0){
                 visited[ni][nj][block]=visited[i][j][block]+1;
                 q.push({{ni,nj},block});
             }
         }
     }
-    int a=visited[n][m][0], b=visited[n][m][1];
-    if(a==-1 && b==-1) return -1;
-    else if(a==-1 || b==-1) return max(a,b)+1;
-    else return min(a,b)+1;
+    return -1;
     
 }
 
@@ -55,24 +53,9 @@ int main(){
         for(int j=1;j<=m;j++){
             int tmp=str[j-1]-'0';
             map[i][j]=tmp;
-            visited[i][j][0]=visited[i][j][1]=-1;
+            visited[i][j][0]=visited[i][j][1]=0;
         }
     }
-
-    
-    // for(int i=1;i<=n;i++){
-    //     for(int j=1;j<=m;j++){
-    //         printf("%8d",visited[i][j][0]);
-    //     }
-    //     cout<<endl;
-    // }
-    // cout<<endl;
-    // for(int i=1;i<=n;i++){
-    //     for(int j=1;j<=m;j++){
-    //         printf("%8d",visited[i][j][1]);
-    //     }
-    //     cout<<endl;
-    // }
 
     cout<<bfs();
 

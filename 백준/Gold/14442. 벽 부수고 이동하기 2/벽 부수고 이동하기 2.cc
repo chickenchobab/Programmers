@@ -52,20 +52,16 @@ int bfs(){
 
 int main(){
     ios::sync_with_stdio(false);
-    cin.tie(0); cout.tie(0);
 
     cin>>n>>m>>k; 
-    cin.ignore();
 
     for(int i=1;i<=n;i++){
         string str;
-        getline(cin,str);
+        cin>>str;
 
         for(int j=1;j<=m;j++){
             map[i][j]=str[j-1]-'0';
-            for(int l=0; l<=k; l++){
-                visited[i][j]=-1;
-            }
+            visited[i][j]=-1;
         }
     }
 

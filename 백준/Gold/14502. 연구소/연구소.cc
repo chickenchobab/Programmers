@@ -31,7 +31,7 @@ void dfs(int i, int j){
     
 }
 
-void build(int idx){
+void build(int idx, int cur){
     if(idx==3) {
         for(int i=1;i<=n;i++){
             for(int j=1;j<=m;j++){
@@ -56,9 +56,10 @@ void build(int idx){
 
     for(int i=1; i<=n; i++){
         for(int j=1; j<=m; j++){
+            if(i*m+j<cur) continue;
             if(map[i][j]!=0) continue;
             map[i][j]=1;
-            build(idx+1);
+            build(idx+1, i*m+j);
             map[i][j]=0;
         }     
     }
@@ -80,7 +81,7 @@ int main(){
         for(int j=1; j<=m; j++){
             if(map[i][j]!=0) continue;
             map[i][j]=1;
-            build(1);
+            build(1, i*m+j);
             map[i][j]=0;
         }     
     }

@@ -113,12 +113,10 @@ int main() {
             }
         }
         move();
-        //show();
         if(turncnt==0) break;
         else ans++;
     }
     
-    //show();
     cout<<ans;
     return 0;
 }

@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <iostream>
 #include <string>
 #include <queue>
@@ -10,16 +9,6 @@ typedef pair<int, int> p;
 char map[13][7];
 int visited[13][7], di[]={1,-1,0,0}, dj[]={0,0,1,-1};
 int cnt,ans,turncnt;
-
-void show(){
-    for(int i=1;i<=12;i++){
-        for(int j=1; j<=6; j++){
-            cout<<map[i][j]<<' ';
-        }
-        cout<<'\n';
-    }
-    cout<<'\n';
-}
 
 void bfs(int i, int j){
     queue<p> q;
@@ -43,7 +32,6 @@ void bfs(int i, int j){
 }
 
 void move(){
-    
     int i,j,c;
     for(j=1;j<=6;j++){
         stack<char> st;

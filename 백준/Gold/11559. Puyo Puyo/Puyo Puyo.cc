@@ -30,30 +30,6 @@ void bfs(int i, int j){
     }
 }
 
-void move(){
-    int i,j,c;
-    for(j=1;j<=6;j++){
-        stack<char> st;
-        while(1){
-            c=0;
-            for(i=1; i<=12; i++){
-                if(visited[i][j]==0) st.push(map[i][j]);
-                else {
-                    visited[i][j]=0;
-                    c++;
-                    break;
-                }
-            }
-            if(c==0) break;
-            for(;i>=1;i--){
-                if(st.empty()) st.push('.');
-                map[i][j]=st.top();
-                st.pop();
-            } 
-        }
-    }
-}
-
 void clear(int i, int j){
     queue<p> q;
     q.push({i,j});
@@ -69,6 +45,26 @@ void clear(int i, int j){
             if(map[ni][nj]!=map[i][j]) continue;
             q.push({ni,nj});
             visited[ni][nj]=0;
+        }
+    }
+}
+
+void move(){
+
+    for(int j=1;j<=6;j++){
+        stack<char> st;
+
+        for(int i=12; i>=1; i--){
+            if(visited[i][j]==0)
+                st.push(map[i][j]);    
+            else {
+                visited[i][j]=0;
+            }
+        }
+        while(st.size()!=12) st.push('.');
+        for(int i=1; i<=12; i++){
+            map[i][j]=st.top();
+            st.pop();
         }
     }
 }

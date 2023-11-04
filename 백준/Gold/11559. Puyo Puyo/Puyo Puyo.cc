@@ -8,7 +8,7 @@ using namespace std;
 typedef pair<int, int> p;
 char map[13][7];
 int visited[13][7], di[]={1,-1,0,0}, dj[]={0,0,1,-1};
-int cnt,ans,turncnt;
+int cnt,ans,bomb;
 
 void bfs(int i, int j){
     queue<p> q;
@@ -26,7 +26,6 @@ void bfs(int i, int j){
             q.push({ni,nj});
             visited[ni][nj]=1;
             cnt++;
-            //cout<<cnt<<'\n';
         }
     }
 }
@@ -86,22 +85,19 @@ int main() {
         }
     }
     while(1){
-        turncnt=0;
+        bomb=0;
         for(int i=1; i<=12; i++){
             for(int j=1; j<=6; j++){
-                if(map[i][j]=='.' || visited[i][j]) continue;
+                if(map[i][j]=='.') continue;
+                if(visited[i][j]) continue;
                 cnt=1;
                 bfs(i,j);
-                if(cnt>3){
-                    turncnt++;
-                }
-                else{
-                    clear(i,j);
-                }
+                if(cnt>3) bomb++;
+                else clear(i,j); 
             }
         }
         move();
-        if(turncnt==0) break;
+        if(bomb==0) break;
         else ans++;
     }
     

@@ -32,6 +32,8 @@ int shortest_distance(int start, int end){
 }
 
 int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(0);
     cin>>n>>e;
 
     for(int i=1;i<=e;i++){

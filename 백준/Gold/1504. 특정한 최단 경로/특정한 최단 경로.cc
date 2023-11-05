@@ -22,6 +22,9 @@ void dijkstra(int num, int st){
     while(pq.size()){
         p u = pq.top();
         pq.pop();
+
+        if(d[num][u.second]<u.first) continue;
+
         for(p v:g[u.second]){
             int uv=v.first;
             if(d[num][v.second]>uv+d[num][u.second]) {

@@ -8,27 +8,26 @@ using namespace std;
 int n,e,a,b,c,x,y,ans;
 typedef pair<int,int> p;
 vector<p> g[808];
+int d[3][808];
 
-int shortest_distance(int start, int end){
+void dijkstra(int num, int st){
     priority_queue<p> pq;
-    int d[808];
     for(int i=1;i<=n;i++){
-        if(i==start) d[i]=0;
-        else d[i]=MAX;
-        pq.push({d[i],i});
+        if(i==st) d[num][i]=0;
+        else d[num][i]=MAX;
+        pq.push({d[num][i],i});
     }
     while(pq.size()){
         p u = pq.top();
         pq.pop();
         for(p v:g[u.second]){
             int uv=v.first;
-            if(d[v.second]>uv+d[u.second]) {
-                d[v.second]=uv+d[u.second];
-                pq.push({d[v.second], v.second});
+            if(d[num][v.second]>uv+d[num][u.second]) {
+                d[num][v.second]=uv+d[num][u.second];
+                pq.push({d[num][v.second], v.second});
             }
         }
     }
-    return d[end];
 }
 
 int main(){
@@ -44,12 +43,8 @@ int main(){
 
     cin>>x>>y;
 
-    int d1x=shortest_distance(1,x);
-    int d1y=shortest_distance(1,y);
-    int dxy=shortest_distance(x,y);
-    int dxn=shortest_distance(x,n);
-    int dyn=shortest_distance(y,n);
-    ans=min(d1x+dxy+dyn, d1y+dxy+dxn);
+    dijkstra(0,1); dijkstra(1,x); dijkstra(2,y);
+    ans=min(d[0][x]+d[1][y]+d[2][n], d[0][y]+d[2][x]+d[1][n]);
     cout<<((ans<MAX)? ans:-1);
     
     

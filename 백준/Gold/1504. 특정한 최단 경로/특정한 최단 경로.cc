@@ -12,11 +12,13 @@ int d[3][808];
 
 void dijkstra(int num, int st){
     priority_queue<p> pq;
+
     for(int i=1;i<=n;i++){
-        if(i==st) d[num][i]=0;
-        else d[num][i]=MAX;
-        pq.push({d[num][i],i});
-    }
+        d[num][i]=MAX;
+    }d[num][st]=0;
+
+    pq.push({0, st});
+
     while(pq.size()){
         p u = pq.top();
         pq.pop();
@@ -28,6 +30,7 @@ void dijkstra(int num, int st){
             }
         }
     }
+    
 }
 
 int main(){

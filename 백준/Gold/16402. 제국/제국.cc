@@ -8,6 +8,7 @@ int n,m,cnt;
 int parent[501];
 char name[501];
 map<string, int> mp;
+//vector<char> ans;
 
 void init(){
     for(int i=1;i<=n;i++)
@@ -46,19 +47,23 @@ int main(){
         getline(cin, str);
         mp.insert({str.substr(11), mp.size()+1});
     }
+    // for(auto tmp:mp){
+    //     cout<<tmp.first<<' '<<tmp.second<<'\n';
+    // }
     for(int i=1;i<=m;i++){
         char str1[21], str2[21];
         string s1, s2;
-        int a,b,order;
-
+        int a,b,o;
         cin.getline(str1, 21, ',');
         cin.getline(str2, 21, ',');
-        cin>>order;
+        cin>>o;
         cin.ignore();
+        //cout<<str1<<'/'<<str2<<'/'<<o<<'\n';
        
         s1=str1; s2=str2;
         a=mp[s1.substr(11)], b=mp[s2.substr(11)];
-        merge(a,b,order);
+        //cout<<a<<' '<<b<<endl;
+        merge(a,b,o);
     }
     
     for(int i=1;i<=n;i++){

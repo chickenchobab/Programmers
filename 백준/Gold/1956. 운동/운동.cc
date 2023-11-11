@@ -8,6 +8,9 @@ int n, e, a, b, c, ans;
 int graph[401][401];
 
 int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    
     cin>>n>>e;
 
     for(int i=1; i<=n; i++){

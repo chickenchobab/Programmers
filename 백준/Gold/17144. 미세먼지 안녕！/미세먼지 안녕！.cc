@@ -1,7 +1,5 @@
 #include <iostream>
-#include <queue>
 #include <stack>
-#include <tuple>
 #include <cstdio>
 
 using namespace std;
@@ -12,21 +10,9 @@ int map[51][51], reserved[51][51];
 int di[] = {1, -1, 0, 0}, dj[] = {0, 0, 1, -1};
 
 void show(){
-    cout<<"\nthis is map\n";
     for(int i=1; i<=r; i++){
         for(int j=1; j<=c; j++){
             printf("%3d", map[i][j]);
-        }
-        cout<<'\n';
-    }
-    cout<<'\n';
-}
-
-void show_reserved(){
-    cout<<"\nthis is reserved\n";
-    for(int i=1; i<=r; i++){
-        for(int j=1; j<=c; j++){
-            printf("%3d", reserved[i][j]);
         }
         cout<<'\n';
     }
@@ -85,6 +71,10 @@ void clean(int num, int pos){
 }
 
 int main(){
+
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
     cin >> r >> c >> t;
 
     map[0][0] = 0;

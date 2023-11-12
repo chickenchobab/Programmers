@@ -1,5 +1,4 @@
 #include <iostream>
-#include <stack>
 #include <cstdio>
 
 using namespace std;
@@ -10,6 +9,7 @@ int map[51][51], reserved[51][51];
 int di[] = {1, -1, 0, 0}, dj[] = {0, 0, 1, -1};
 
 void show(){
+    cout<<'\n';
     for(int i=1; i<=r; i++){
         for(int j=1; j<=c; j++){
             printf("%3d", map[i][j]);
@@ -42,38 +42,30 @@ void contamiate(int i, int j){
 
 void clean(int num, int pos){
 
-    int i = pos, j = 2;
-    stack<ii> st;
-    st.push({0,0});
-
+    int i,j;
+    map[pos][1] = 0;
     if(num == 1){
-        for(; j < c; ++j) st.push({i, j});
-        for(; i > 1; --i) st.push({i, j});
-        for(; j > 1; --j) st.push({i, j});
-        for(; i < pos; ++i) st.push({i, j});
+        i = pos-1, j = 1;
+        for(; i > 1; --i) map[i][j] = map[i-1][j];
+        for(; j < c; ++j) map[i][j] = map[i][j+1];
+        for(; i < pos; ++i) map[i][j] = map[i+1][j];
+        for(; j > 1; --j) map[i][j] = map[i][j-1];
+        
     }
     else{
-        for(; j < c; ++j) st.push({i, j});
-        for(; i < r; ++i) st.push({i, j});
-        for(; j > 1; --j) st.push({i, j});
-        for(; i > pos; --i) st.push({i, j});
+        i = pos+1, j = 1;
+        for(; i < r; ++i) map[i][j] = map[i+1][j];
+        for(; j < c; ++j) map[i][j] = map[i][j+1];
+        for(; i > pos; --i) map[i][j] = map[i-1][j];
+        for(; j > 1; --j) map[i][j] = map[i][j-1];
     }
-
-    while(st.size()!=1){
-        ii tmp = st.top();
-        st.pop();
-        int ni=tmp.first;
-        int nj=tmp.second;
-        int i = st.top().first;
-        int j = st.top().second;
-        map[ni][nj] = map[i][j];
-    }
+    map[pos][1] = -1;
 }
 
 int main(){
 
-    ios::sync_with_stdio(false);
-    cin.tie(0);
+    // ios::sync_with_stdio(false);
+    // cin.tie(0);
 
     cin >> r >> c >> t;
 
@@ -103,7 +95,6 @@ int main(){
         //show();
 
         int num = 1;
-
         for(int i=1; i<=r; i++){
             if(map[i][1]<0){
                 clean(num, i);

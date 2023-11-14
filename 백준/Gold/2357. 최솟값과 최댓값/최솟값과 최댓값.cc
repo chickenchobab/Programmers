@@ -1,59 +1,94 @@
 #include <iostream>
+#include <vector>
 #include <algorithm>
-
-#define MAX 100001
-
 using namespace std;
+using ll = long long;
 
-typedef pair<int, int> p;
-int n,m,a,b,arr[MAX]; 
-p tree[4*MAX];
+// one-base segment tree
+class Segtree {
+ public:
+  vector<ll> tree;
+  int size;
 
-p init(int s, int e, int node){
-    if(s==e) return tree[node]={arr[s],arr[s]};
-    int mid=(s+e)/2;
-    init(s,mid,2*node);
-    init(mid+1,e,2*node+1);
+  Segtree(int t, int option) {
+    for (size = 1; size < t; size *= 2)
+      ;
+    if(option == 1)
+    tree.resize(size * 2, 1);
+    else
+    tree.resize(size * 2, 1000000000);
+  }
 
-    int x=max(tree[2*node].first, tree[2*node+1].first);
-    int y=min(tree[2*node].second, tree[2*node+1].second);
-    return tree[node]={x,y};
-}
+  // update
+  void update1(int pos, ll num) {
+    int index = size + pos - 1;
+    ll diff = num - tree[index];
+    while (index) {
+      tree[index] = max(num, tree[index]);
+      index /= 2;
+    }
+  }
 
-int big(int s, int e, int node, int l, int r){
-    if(r<s || l>e) return 0;
-    if(l<=s && r>=e) return tree[node].first;
+  void update2(int pos, ll num) {
+    int index = size + pos - 1;
+    ll diff = num - tree[index];
+    while (index) {
+      tree[index] = min(num, tree[index]);
+      index /= 2;
+    }
+  }
 
-    int mid=(s+e)/2; 
+ ll query1(int left, int right) { return query1(1, 1, size, left, right); }
+ ll query2(int left, int right) { return query2(1, 1, size, left, right); }
 
-    return max(big(s,mid,2*node,l,r),big(mid+1, e,2*node+1,l,r));
-}
+  ll query1(int pos, int start, int end, int left, int right) {
+    if (start > right || end < left) {  // 구하려는 구간이 밖에 있는 경우
+      return 1;
+    } else if (left <= start &&
+               end <= right) {  // 구하려는 구간이 완전히 안에 있는 경우
+      return tree[pos];
+    } else {  // 구하려는 구간이 걸쳐 있는 경우
+      int mid = (start + end) / 2;
+      return max(query1(pos * 2, start, mid, left, right) ,
+             query1(pos * 2 + 1, mid + 1, end, left, right));
+    }
+  }
 
-int small(int s, int e, int node, int l, int r){
-    if(r<s || l>e) return 1000000000;
-    if(l<=s && r>=e) return tree[node].second;
+  ll query2(int pos, int start, int end, int left, int right) {
+    if (start > right || end < left) {  // 구하려는 구간이 밖에 있는 경우
+      return 1000000000;
+    } else if (left <= start &&
+               end <= right) {  // 구하려는 구간이 완전히 안에 있는 경우
+      return tree[pos];
+    } else {  // 구하려는 구간이 걸쳐 있는 경우
+      int mid = (start + end) / 2;
+      return min(query2(pos * 2, start, mid, left, right) ,
+             query2(pos * 2 + 1, mid + 1, end, left, right));
+    }
+  }
+};
 
-    int mid=(s+e)/2; 
+ll n,m,a,b;
 
-    return min(small(s,mid,2*node,l,r),small(mid+1,e,2*node+1,l,r));
-}
 
 int main(){
     ios::sync_with_stdio(false);
-    cin.tie(0); cout.tie(0);
+    cin.tie(0);
     cin>>n>>m;
-    for(int i=1;i<=n;i++){
-        cin>>arr[i];
+    Segtree seg1(n, 1);
+    Segtree seg2(n, 2);
+    int input;
+    for(int i=1; i<=n; i++){
+        cin>>input;
+        seg1.update1(i,input);
+        seg2.update2(i,input);
     }
-    init(1,n,1);
-    // cout<<"\n\n";
-    // for(int i=1;i<=4*n;i++){
-    //     cout<<tree[i].first<<' '<<tree[i].second<<'\n';
-    // }
-    // cout<<"\n\n";
-    while(m--){
+    for(int i=1; i<=m; i++){
         cin>>a>>b;
-        cout<<small(1,n,1,a,b)<<' '<<big(1,n,1,a,b)<<'\n';
+        cout<<seg2.query2(a,b)<<' '<<seg1.query1(a,b)<<'\n';
     }
+
+
+    
 
 }

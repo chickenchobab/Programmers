@@ -34,8 +34,7 @@ class Segtree {
         ii c1 = tree[2*index];
         ii c2 = tree[2*index+1];
         tree[index] = {c1.first + c2.first, c1.second + c2.second};
-        //cout << tree[index].first << ' ' << tree[index].second << '\n';
-      }
+       }
       index /= 2;
     }
   }

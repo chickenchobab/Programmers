@@ -6,28 +6,27 @@ using namespace std;
 
 int n;
 vector<int> g[100001];
-int visited[100001], parent[100001];
+int parent[100001];
 
-void dfs(int u){
-    visited[u] = 1;
-    for(int v : g[u]){
-        if (visited[v]) continue;
-        parent[v] = u;
-        dfs(v);
-    }
-}
+// void dfs(int u){
+//     visited[u] = 1;
+//     for(int v : g[u]){
+//         if (visited[v]) continue;
+//         parent[v] = u;
+//         dfs(v);
+//     }
+// }
 
 void bfs(){
     queue<int> q;
-    visited[1] = 1;
+    parent[1] = 1;
     q.push(1);
     while(q.size()){
         int u = q.front();
         q.pop();
         for (int v : g[u]){
-            if (visited[v]) continue;
+            if (parent[v]) continue;
             parent[v] = u;
-            visited[v] = 1;
             q.push(v);
         }
     }

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 
 using namespace std;
 
@@ -13,6 +14,22 @@ void dfs(int u){
         if (visited[v]) continue;
         parent[v] = u;
         dfs(v);
+    }
+}
+
+void bfs(){
+    queue<int> q;
+    visited[1] = 1;
+    q.push(1);
+    while(q.size()){
+        int u = q.front();
+        q.pop();
+        for (int v : g[u]){
+            if (visited[v]) continue;
+            parent[v] = u;
+            visited[v] = 1;
+            q.push(v);
+        }
     }
 }
 
@@ -31,7 +48,7 @@ int main(){
         g[b].push_back(a);
     }
 
-    dfs(1);
+    bfs();
 
     for (int i=2; i<=n; i++){
         cout << parent[i] << '\n';

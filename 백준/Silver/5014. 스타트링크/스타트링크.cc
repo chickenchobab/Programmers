@@ -31,6 +31,8 @@ void bfs(){
 }
 
 int main(){
+    ios::sync_with_stdio(false);
+    
     cin >> f >> s >> g >> u >> d;
 
     bfs();

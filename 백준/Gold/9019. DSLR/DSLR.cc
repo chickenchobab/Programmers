@@ -12,7 +12,6 @@ char order[10000];
 int calculate (int op, int num){
     if (op == 0) return (num * 2) % 10000;
     if (op == 1) return num? num - 1 : 9999;
-    if (num == 0) return 0;
     if (op == 2) return num / 1000 + num % 1000 * 10;
     if (op == 3) return num / 10 + num % 10 * 1000;
 }
@@ -57,8 +56,8 @@ void bfs(){
 int main(){
 
     ios::sync_with_stdio(false);
-    // cin.tie(0); 
-    // cout.tie(0);
+    cin.tie(0); 
+    cout.tie(0);
 
     cin >> T;
     while (T --){

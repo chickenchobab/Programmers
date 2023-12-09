@@ -14,7 +14,7 @@ vector<iii> edge;
 
 bool bellman_ford(){
 
-    d[1] = 0;
+    //d[1] = 0;
 
     for (int i=1; i<=n-1; i++){
         for(iii j : edge){
@@ -27,6 +27,7 @@ bool bellman_ford(){
     for (iii j : edge){
         int a, b, ab;
         tie(a, b, ab) = {get<0>(j), get<1>(j), get<2>(j)};
+        //if(d[a] == INF) continue;
         if(d[b] > d[a] + ab) return false;
     }
     return true;

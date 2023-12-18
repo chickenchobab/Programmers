@@ -6,12 +6,12 @@
 
 using namespace std;
 
-typedef pair<long long, int> p;
+typedef pair<int, int> p;
 int n;
 vector<p> edge[1001];
 priority_queue<p, vector<p>, greater<p>> pq;
 int visited[1001];
-long long d[1001];
+int d[1001];
 
 long long prim(){
 
@@ -29,10 +29,10 @@ long long prim(){
         if (visited[u.second]) continue;
         ans += u.first;
         visited[u.second] = 1;
-        // cout << ans <<' ';
 
         for (p v : edge[u.second]){
             int uv = v.first; 
+            if (visited[v.second]) continue;
             if (d[v.second] <= uv) continue;
             d[v.second] = uv;
             pq.push({v.first, v.second}); 

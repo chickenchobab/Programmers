@@ -1,23 +1,22 @@
 #include <iostream>
-
+#include <vector>
 using namespace std;
 
-int n, m, s, d, ans;
-int map[501][501];
-int visited[501], cnt[501];
+int n, m, s, cnt, ans;
+vector<int> e1[501], e2[502];
+int visited[501];
 
 void reset(){
     for (int i=1; i<=n; i++)
         visited[i] = 0;
 }
 
-void dfs(int u){
+void dfs(int u, vector<int> *e){
     visited[u] = 1;
-    for (int v=1; v<=n; v++){
-        if (map[u][v] != d) continue;
+    for (int v : e[u]){
         if (visited[v]) continue;
-        cnt[s] ++;
-        dfs(v);
+        cnt ++;
+        dfs(v, e);
     }
 }
 
@@ -25,29 +24,23 @@ int main(){
     
     ios::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
+    
     cin >> n >> m;
 
     int a, b;
     for (int i=1; i<=m; i++){
         cin >> a >> b;
-        map[a][b] = 1;
-        map[b][a] = -1;
+        e1[a].push_back(b);
+        e2[b].push_back(a);
     }
 
     for (s=1; s<=n; s++){
-        d = 1;
-        dfs(s);
+        cnt = 0;
+        dfs(s, e1);
         reset();
-        d = -1;
-        dfs(s);
+        dfs(s, e2);
         reset();
-    }
-
-    for (int i=1; i<=n; i++){
-        //cout << cnt[i] << ' '; 
-        if (cnt[i] == n-1) {
-            ans++;
-        }
+        if (cnt == n-1) ans++;
     }
 
     //cout << endl;

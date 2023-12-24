@@ -15,20 +15,19 @@ void input(){
     cin.tie(0);
     cout.tie(0);
     cin >> n;
-    int i, j, d, tmp;
-    for (tmp=1; tmp<=n; tmp++){
+    int i, j, d;
+    for (int t = 1; t <= n; t ++){
         cin >> i;
         while(1){
             cin >> j;
             if (j == -1) break;
             cin >> d;
             g[i].push_back({j, d});
-            g[j].push_back({i, d});
         }
     }
 }
 void reset(){
-    for (int i=1; i<=n; i++) 
+    for (int i = 1; i <= n; i ++) 
         visited[i] = 0;
     dist = 0;
 }

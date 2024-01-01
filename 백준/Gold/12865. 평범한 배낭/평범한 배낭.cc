@@ -4,9 +4,7 @@
 using namespace std;
 
 int n, k;
-typedef pair<int, int> ii;
-ii box[101];
-int dp[100001];
+int w[101], v[101], dp[100001];
 
 void input(){
     ios::sync_with_stdio(false);
@@ -14,25 +12,20 @@ void input(){
     cout.tie(0);
 
     cin >> n >> k;
-    int w, v;
+
     for (int i = 1; i <= n; i ++){
-        cin >> w >> v;
-        box[i] = {w, v};
+        cin >> w[i] >> v[i];
     }
-    box[0] = {0, 0};
 }
 
 int main(){
 
     input();
 
-    // sort(box + 1, box + n + 1);
-
-    int ans = 0;
-
     for (int i = 1; i <= n ; i ++){
-        for (int j = k; j >= box[i].first; j --){
-            dp[j] = max(dp[j], dp[j - box[i].first] + box[i].second);
+        // 물건 중복 방지를 위해 역순으로 갱신
+        for (int j = k; j >= w[i]; j --){
+            dp[j] = max(dp[j], dp[j - w[i]] + v[i]);
         }
     }
 

@@ -3,29 +3,38 @@
 
 using namespace std;
 
-//typedef pair<int, int> p;
+int n, k;
+typedef pair<int, int> ii;
+ii box[101];
+int dp[100001];
 
-int n,k;
-int dp[100001], v[101], w[101];
+void input(){
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+
+    cin >> n >> k;
+    int w, v;
+    for (int i = 1; i <= n; i ++){
+        cin >> w >> v;
+        box[i] = {w, v};
+    }
+    box[0] = {0, 0};
+}
 
 int main(){
-    ios::sync_with_stdio(false);
-    cin.tie(0); cout.tie(0);
-    cin>>n>>k;
 
-    for(int i=1;i<=n;i++){
-        cin>>w[i]>>v[i];
-    }
+    input();
 
-    for(int i=1;i<=n;i++){
-        for(int j=k;j>=1;j--){
-            if(j>=w[i]) dp[j]=max(dp[j-w[i]]+v[i], dp[j]);
+    // sort(box + 1, box + n + 1);
+
+    int ans = 0;
+
+    for (int i = 1; i <= n ; i ++){
+        for (int j = k; j >= box[i].first; j --){
+            dp[j] = max(dp[j], dp[j - box[i].first] + box[i].second);
         }
     }
 
-    // for(int i=1;i<=k;i++){
-    //     cout<<dp[i]<<' ';
-    // }
-    cout<<dp[k];
-    
+    cout << dp[k];
 }

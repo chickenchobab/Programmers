@@ -1,23 +1,30 @@
 #include <iostream>
 #include <algorithm>
-
+#define MAX 22222
 using namespace std;
 
-int n, dp[5001];
+int n;
+// int arr[5005];
+
+void input(){
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    cin >> n;
+}
 
 int main(){
-    cin>>n;
-    for(int i=3;i<=5;i+=2){
-        for(int j=1;j<=n;j++){
-            if(j%i==0) dp[j]=j/i;
-            if(dp[j-i]) {
-                if(dp[j]) dp[j]=min(dp[j], dp[j-i]+1);
-                else dp[j]=dp[j-i]+1;
-            }
-        }
+    input();
+
+    int cnt = 0, flag = 0;
+
+    for (int i = 0; i <= n / 3; i ++){
+        if ((n - 3 * i) % 5) continue;
+        cnt = (n - 3 * i) / 5 + i;
+        flag = 1;
+        break;
     }
-    
-    cout<<(dp[n]? dp[n]:-1);
 
+    flag ? cout << cnt : cout << -1;
 
-}
+}       

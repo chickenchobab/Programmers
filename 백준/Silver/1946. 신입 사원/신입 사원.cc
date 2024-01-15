@@ -13,24 +13,23 @@ void input(){
 }
 
 int solve(){
-    int n, a, b, c = 0;
-    pair<int, int> rank[100001];
+    int n, a, b, tmp, cnt;
+    int rank[100001];
+
     cin >> n;
     for (int i = 1; i <= n; i ++){
         cin >> a >> b;
-        rank[i] = {a, b};
+        rank[a] = b;
     }
-    sort(rank + 1, rank + n + 1);
 
-    b = rank[1].second;
+    tmp = rank[1];
+    cnt = 1;
     for (int i = 2; i <= n; i ++){
-        if (rank[i].second < b) {
-            b = rank[i].second;
-            continue;
-        }
-        c ++;
+        if (rank[i] > tmp) continue;
+        tmp = rank[i];
+        cnt ++;
     }
-    return n - c;
+    return cnt;
 }
 
 int main(){

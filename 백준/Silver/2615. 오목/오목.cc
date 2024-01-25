@@ -3,7 +3,7 @@
 using namespace std;
 
 int winner, x, y;
-int map[20][20], visited[20][20];
+int map[20][20];
 int di[] = {1, 0, -1, 0, 1, -1, 1, -1};
 int dj[] = {0, 1, 0, -1, 1, -1, -1, 1};
 
@@ -28,7 +28,6 @@ void dfs(int si, int sj, int i, int j, int dir, int cnt){
 
     int ni = i + di[dir];
     int nj = j + dj[dir];
-    // cout << si << ' ' << sj << ' ' << i << ' ' << j << ' ' << cnt << '\n';
     bool val = valid(i, j, ni, nj);
 
     if (cnt == 4 && val == false){ 

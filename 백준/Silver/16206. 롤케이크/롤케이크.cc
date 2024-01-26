@@ -6,13 +6,6 @@ using namespace std;
 int n, m, ans;
 int arr[1001];
 
-bool cmp(int a, int b){
-    if (a % 10 == b % 10){
-        return a < b;
-    }
-    return a % 10 < b % 10;
-}
-
 void init(){
     ios::sync_with_stdio(false);
     cin.tie(0);
@@ -23,9 +16,14 @@ void init(){
     }
 }
 
+bool cmp(int a, int b){
+    if (a % 10 == b % 10) return a < b;
+    return a % 10 < b % 10;
+}
+
 void solve(){
     sort(arr + 1, arr + n + 1, cmp);
-    for (int i = 1; i <= n && m; i ++){
+    for (int i = 1; i <= n && m > 0; i ++){
         if (arr[i] < 10) continue;
         int cut = min(m, arr[i] / 10 - (arr[i] % 10 == 0));
         ans += (cut + (arr[i] - cut * 10 == 10));

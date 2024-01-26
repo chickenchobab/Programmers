@@ -26,10 +26,9 @@ void init(){
 void solve(){
     sort(arr + 1, arr + n + 1, cmp);
     for (int i = 1; i <= n && m; i ++){
-        int tmp = arr[i];
-        if (tmp < 10) continue;
-        int cut = min(m, tmp / 10 - (tmp % 10 == 0));
-        ans += (cut + (tmp - cut * 10 == 10));
+        if (arr[i] < 10) continue;
+        int cut = min(m, arr[i] / 10 - (arr[i] % 10 == 0));
+        ans += (cut + (arr[i] - cut * 10 == 10));
         m -= cut;
     }
 }

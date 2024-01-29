@@ -4,10 +4,9 @@
 
 using namespace std;
 
-int n, m;
+int n, m, flag;
 int visited[2000];
 vector<int> edge[2000];
-int flag;
 
 void input(){
     ios::sync_with_stdio(false);
@@ -39,9 +38,9 @@ void dfs(int cur, int len){
 int main(){
     input();
     for (int i = 0; i < n && flag == 0; i ++){
-        fill(visited, visited + n, 0);
         visited[i] = 1;
         dfs(i, 1);
+        visited[i] = 0;
     }
     cout << flag;
 }

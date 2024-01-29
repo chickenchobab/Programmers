@@ -5,7 +5,7 @@ using namespace std;
 
 int n, r, q, u, v;
 vector<int> edge[100001];
-int dp[100001], visited[100001];
+int dp[100001];
 
 void input(){
     ios::sync_with_stdio(false);
@@ -19,15 +19,15 @@ void input(){
     }
 }
 
-int dfs(int cur){
-    if (dp[cur]) return dp[cur];
+void dfs(int prv, int cur){
+    // if (dp[cur]) return;
     int sum = 1;
-    visited[cur] = 1;
     for (int nxt : edge[cur]){
-        if (visited[nxt]) continue;
-        sum += dfs(nxt);
+        if (nxt == prv) continue;
+        dfs(cur, nxt);
+        sum += dp[nxt];
     }
-    return (dp[cur] = sum);
+    dp[cur] = sum;
 }
 
 void query(){
@@ -39,6 +39,6 @@ void query(){
 
 int main(){
     input();
-    dfs(r);
+    dfs(0, r);
     query();
 }

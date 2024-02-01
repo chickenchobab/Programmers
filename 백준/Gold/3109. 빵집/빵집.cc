@@ -20,7 +20,6 @@ void input(){
 int dfs(int i, int j){
     
     if (j == c) {
-        ans ++;
         return 1;
     }
     map[i][j] = -1;
@@ -41,7 +40,7 @@ int main(){
 
     for (int i = 1; i <= r; i ++){
         // cout << i << ' ' << 1 << '\n';
-        dfs(i, 1);
+        ans += dfs(i, 1);
     }
 
     cout << ans;

@@ -4,7 +4,7 @@
 using namespace std;
 
 int n, m;
-int map[101][101], visited[101][101];
+int map[101][101];
 int di[] = {1, -1, 0, 0}, dj[] = {0, 0, 1, -1};
 typedef pair<int, int> p;
 
@@ -19,100 +19,60 @@ void input(){
     }
 }
 
-// 외부 공기는 -1 표시
-void init(){
-    queue<p> q;
-    visited[1][1] = 1;
-    q.push({1, 1});
-    while (q.size()){
-        int i = q.front().first;
-        int j = q.front().second;
-        q.pop();
-        for (int d = 0; d < 4; d ++){
-            int ni = i + di[d];
-            int nj = j + dj[d];
-            if (ni < 1 || ni > n || nj < 1 || nj > m) continue;
-            if (visited[ni][nj] || map[ni][nj]) continue;
-            map[ni][nj] = -1;
-            visited[ni][nj] = 1;
-            q.push({ni, nj});
-        }
-    }
-}
-
-void reset(){
-    for (int i = 1; i <= n; i ++){
-        for (int j = 1; j <= m; j ++){
-            visited[i][j] = 0;
-        }
-    }
-}
-
-void find_edge(int i, int j){
+// 점이 엣지인지 확인한다
+bool find_edge(int i, int j){
     int cnt = 0;
-    visited[i][j] = 1; 
     for (int d = 0; d < 4; d ++){
         int ni = i + di[d];
         int nj = j + dj[d];
-        if (ni < 1 || ni > n || nj < 1 || nj > m) continue;
         if (map[ni][nj] == -1) cnt ++;
-        if (map[ni][nj] || visited[ni][nj]) continue;
-        find_edge(ni, nj);
     }
-    if (cnt >= 2) visited[i][j] = -1;
+    if (cnt >= 2) return true;
+    return false;
 }
 
-void find_air(int i, int j){
+// 내부 공기를 외부 공기로 바꾼다
+void change_air(int i, int j){
     map[i][j] = -1;
     for (int d = 0; d < 4; d ++){
         int ni = i + di[d], nj = j + dj[d];
         if (ni < 1 || ni > n || nj < 1 || nj > m) continue;
         if (map[ni][nj]) continue;
-        find_air(ni, nj);
-    }
-}
-
-void melt(int i, int j){
-    visited[i][j] = 0;
-    map[i][j] = -1;
-    for (int d = 0; d < 4; d ++){
-        int ni = i + di[d];
-        int nj = j + dj[d];
-        if (ni < 1 || ni > n || nj < 1 || nj > m) continue;
-        if (map[ni][nj] == 0) {
-            find_air(ni, nj);
-            continue;
-        }
-        if (visited[ni][nj] != -1) continue;
-        melt(ni, nj);
+        change_air(ni, nj);
     }
 }
 
 bool solve(){
     bool cheese = false;
+
+    queue<p> q;
     for (int i = 1; i <= n; i ++){
         for (int j = 1; j <= m; j ++){
             if (map[i][j] != 1) continue;
-            cheese = true;
-            find_edge(i, j);
+            if (find_edge(i, j)) {
+                q.push({i, j});
+                cheese = true;
+            }
         }
     }
 
-    for (int i = 1; i <= n; i ++){
-        for (int j = 1; j <= m; j ++){
-            if (visited[i][j] != -1) continue;
-            melt(i, j);
+    while(q.size()){
+        int i = q.front().first, j = q.front().second;
+        q.pop();
+        map[i][j] = -1;
+        for (int d = 0; d < 4; d ++){
+            int ni = i + di[d], nj = j + dj[d];
+            if (map[ni][nj]) continue;
+            change_air(ni, nj);
         }
     }
-    
-    reset();
 
     return cheese;
 }
 
 int main(){
     input();
-    init();
+    change_air(1, 1);
     int ans = 0;
     while(int tmp = solve()){
         ans += tmp;

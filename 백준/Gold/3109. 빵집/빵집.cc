@@ -2,7 +2,7 @@
 using namespace std;
 
 int r, c, ans;
-int map[10001][505], visited[10001][505];
+int map[10001][505];
 int di[3] = {-1, 0, 1,};
 
 void input(){
@@ -14,7 +14,6 @@ void input(){
         for (int j = 1; j <= c; j ++){
             cin >> ch;
             map[i][j] = (ch == 'x' ? 1 : 0);
-            visited[i][j] = 0;
         } 
     } 
 }
@@ -24,12 +23,12 @@ int dfs(int i, int j){
         ans ++;
         return 1;
     }
-    visited[i][j] = 1;
+    map[i][j] = -1;
     for (int d = 0; d < 3; d ++){
         int ni = i + di[d];
         int nj = j + 1;
         if (ni < 1 || ni > r || nj < 1 || nj > c) continue;
-        if (map[ni][nj] || visited[ni][nj]) continue;
+        if (map[ni][nj]) continue;
         // cout << ni << ' ' << nj << '\n';
         if (dfs(ni, nj)) return 1;
     }

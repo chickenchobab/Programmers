@@ -9,11 +9,11 @@ void input(){
     ios::sync_with_stdio(false);
     cout.tie(0);
     cin >> r >> c;
-    char ch;
+    string str;
     for (int i = 1; i <= r; i ++){
+        cin >> str;
         for (int j = 1; j <= c; j ++){
-            cin >> ch;
-            map[i][j] = (ch == 'x' ? 1 : 0);
+            map[i][j] = (str[j - 1] == 'x' ? 1 : 0);
         } 
     } 
 }

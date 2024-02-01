@@ -1,0 +1,50 @@
+#include <iostream>
+using namespace std;
+
+int r, c, ans;
+int map[10001][505], visited[10001][505];
+int di[3] = {-1, 0, 1,};
+
+void input(){
+    ios::sync_with_stdio(false);
+    cout.tie(0);
+    cin >> r >> c;
+    char ch;
+    for (int i = 1; i <= r; i ++){
+        for (int j = 1; j <= c; j ++){
+            cin >> ch;
+            map[i][j] = (ch == 'x' ? 1 : 0);
+            visited[i][j] = 0;
+        } 
+    } 
+    // idx = 1;
+}
+int dfs(int i, int j){
+    
+    if (j == c) {
+        ans ++;
+        return 1;
+    }
+    visited[i][j] = 1;
+    for (int d = 0; d < 3; d ++){
+        int ni = i + di[d];
+        int nj = j + 1;
+        if (ni < 1 || ni > r || nj < 1 || nj > c) continue;
+        if (map[ni][nj] || visited[ni][nj]) continue;
+        // cout << ni << ' ' << nj << '\n';
+        if (dfs(ni, nj)) return 1;
+    }
+    return 0;
+}
+
+int main(){
+
+    input();
+
+    for (int i = 1; i <= r; i ++){
+        // cout << i << ' ' << 1 << '\n';
+        dfs(i, 1);
+    }
+
+    cout << ans;
+}

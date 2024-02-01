@@ -1,56 +1,79 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <algorithm>
 
 using namespace std;
 
-int m, n, k, a, b, c, d, cnt;
+int m, n, k;
 int map[101][101], visited[101][101];
 int di[] = {1, -1, 0, 0}, dj[] = {0, 0, 1, -1};
-vector<int> v;
 
-void dfs(int i, int j){
+typedef pair<int, int> pi;
+int cnt;
+vector<int> ans;
+
+
+void input(){
+    ios::sync_with_stdio(false);
+    cout.tie(0);
+    cin >> n >> m >> k;
+    int a, b, c, d;
+    for (int t = 1; t <= k; t ++){
+        cin >> a >> b >> c >> d;
+        for (int i = a + 1; i <= c; i ++){
+            for (int j = b + 1; j <= d; j ++){
+                map[j][i] = 1;
+            }
+        }
+    }
+}
+
+void bfs(int i, int j){
+
+    queue<pi> q;
+    q.push({i, j});
     visited[i][j] = 1;
-    for (int d=0; d<4; d++){
-        int ni = i + di[d];
-        int nj = j + dj[d];
-        if (ni<1 || ni>m || nj<1 || nj>n) continue;
-        if (visited[ni][nj] || map[ni][nj]) continue;
-        dfs(ni, nj);
-        cnt ++;
+
+    while(q.size()){
+        i = q.front().first;
+        j = q.front().second;
+        q.pop();
+        for (int d = 0; d < 4; d ++){
+            int ni = i + di[d];
+            int nj = j + dj[d];
+            if (ni < 1 || ni > n || nj < 1 || nj > m) continue;
+            if (visited[ni][nj] || map[ni][nj]) continue;
+            cnt ++;
+            visited[ni][nj] = 1;
+            q.push({ni, nj});
+        }
     }
 }
 
 int main(){
-    cin >> m >> n >> k;
-
-    for (int i=1; i<=m; i++){
-        for (int j=1; j<=n; j++){
-            map[i][j] = visited[i][j] = 0;
-        }
-    }
-
-    for (int i=1; i<=k; i++){
-        cin >> a >> b >> c >> d;
-        for (int x=b; x<d; x++){
-            for (int y=a; y<c; y++){
-                map[x+1][y+1] ++;
-            }
-        }
-    }
-
-    for (int i=1; i<=m; i++){
-        for (int j=1; j<=n; j++){
-            if (visited[i][j] || map[i][j]) continue;
+    
+    input();
+    for (int i = 1; i <= n; i ++){
+        for (int j = 1; j <= m; j ++){
+            if (map[i][j] || visited[i][j]) continue;
             cnt = 1;
-            dfs(i, j);
-            v.push_back(cnt);
+            bfs(i, j);
+            ans.push_back(cnt);
         }
     }
+    sort(ans.begin(), ans.end());
 
-    sort(v.begin(), v.end());
-    cout << v.size() << '\n';
-    for (int tmp : v){
+    // for (int i = 1; i <= n; i ++){
+    //     for (int j = 1; j <= m; j ++){
+    //         cout << map[i][j] << ' ';
+    //     }
+    //     cout << endl;
+    // }
+
+    cout << ans.size() << '\n';
+    for (int tmp : ans){
         cout << tmp << ' ';
     }
+
 }

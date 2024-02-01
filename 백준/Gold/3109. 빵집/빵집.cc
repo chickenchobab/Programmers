@@ -17,7 +17,6 @@ void input(){
             visited[i][j] = 0;
         } 
     } 
-    // idx = 1;
 }
 int dfs(int i, int j){
     

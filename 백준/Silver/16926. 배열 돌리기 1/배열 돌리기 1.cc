@@ -20,9 +20,10 @@ void input(){
 }
 
 void peel(int idx){
-    skin.clear();
 
     int i, j;
+    skin.clear();
+
     i = idx;
     skin.push_back(arr[idx][idx]);
     for (j = idx + 1; j <= (m + 1) - idx; j ++){
@@ -41,20 +42,24 @@ void peel(int idx){
 }
 
 void rotate(int idx){
-    int i, j, arr_idx = 0;
+    
+    int i, j;
+    int arr_idx = 0;
+    int skin_size = skin.size();
+
     i = idx;
-    arr[idx][idx] = skin[(arr_idx ++ + r) % skin.size()];
-    for (j = idx + 1; j <= (m + 1) - idx; j ++){
-        arr[i][j] = skin[(arr_idx ++ + r) % skin.size()];
+    arr[idx][idx] = skin[(arr_idx ++ + r) % skin_size];
+    for (j = idx + 1; j <= (m + 1) - idx; j ++, arr_idx ++){
+        arr[i][j] = skin[(arr_idx + r) % skin_size];
     }j --;
-    for (i = idx + 1; i <= (n + 1) - idx; i ++){
-        arr[i][j] = skin[(arr_idx ++ + r) % skin.size()];
+    for (i = idx + 1; i <= (n + 1) - idx; i ++, arr_idx ++){
+        arr[i][j] = skin[(arr_idx + r) % skin_size];
     }i --;
-    for (j = j - 1; j >= idx; j --){
-        arr[i][j] = skin[(arr_idx ++ + r) % skin.size()];
+    for (j = j - 1; j >= idx; j --, arr_idx ++){
+        arr[i][j] = skin[(arr_idx + r) % skin_size];
     }j ++;
-    for (i = i - 1; i > idx; i --){
-        arr[i][j] = skin[(arr_idx ++ + r) % skin.size()];
+    for (i = i - 1; i > idx; i --, arr_idx ++){
+        arr[i][j] = skin[(arr_idx + r) % skin_size];
     }i ++;
 }
 

@@ -5,7 +5,7 @@ using namespace std;
 
 int n, m, r;
 int arr[301][301];
-typedef pair<int, int> p;
+vector<int> skin;
 
 
 void input(){
@@ -19,48 +19,53 @@ void input(){
     } 
 }
 
+void peel(int idx){
+    skin.clear();
+
+    int i, j;
+    i = idx;
+    skin.push_back(arr[idx][idx]);
+    for (j = idx + 1; j <= (m + 1) - idx; j ++){
+        skin.push_back(arr[i][j]);
+    }j --;
+    for (i = idx + 1; i <= (n + 1) - idx; i ++){
+        skin.push_back(arr[i][j]);
+    }i --;
+    for (j = j - 1; j >= idx; j --){
+        skin.push_back(arr[i][j]);
+    }j ++;
+    for (i = i - 1; i > idx; i --){
+        skin.push_back(arr[i][j]);
+    }i ++;
+    
+}
+
+void rotate(int idx){
+    int i, j, arr_idx = 0;
+    i = idx;
+    arr[idx][idx] = skin[(arr_idx ++ + r) % skin.size()];
+    for (j = idx + 1; j <= (m + 1) - idx; j ++){
+        arr[i][j] = skin[(arr_idx ++ + r) % skin.size()];
+    }j --;
+    for (i = idx + 1; i <= (n + 1) - idx; i ++){
+        arr[i][j] = skin[(arr_idx ++ + r) % skin.size()];
+    }i --;
+    for (j = j - 1; j >= idx; j --){
+        arr[i][j] = skin[(arr_idx ++ + r) % skin.size()];
+    }j ++;
+    for (i = i - 1; i > idx; i --){
+        arr[i][j] = skin[(arr_idx ++ + r) % skin.size()];
+    }i ++;
+}
+
+
 int main(){
     input();
 
-    vector<int> v[min(n, m) / 2 + 1];
-
-    int i, j, idx;
-    for (idx = 1; idx <= min(n, m) / 2; idx ++){
-        i = idx;
-        v[idx].push_back(arr[idx][idx]);
-        for (j = idx + 1; j <= (m + 1) - idx; j ++){
-            v[idx].push_back(arr[i][j]);
-        }j --;
-        for (i = idx + 1; i <= (n + 1) - idx; i ++){
-            v[idx].push_back(arr[i][j]);
-        }i --;
-        for (j = j - 1; j >= idx; j --){
-            v[idx].push_back(arr[i][j]);
-        }j ++;
-        for (i = i - 1; i > idx; i --){
-            v[idx].push_back(arr[i][j]);
-        }i ++;
+    for (int idx = 1; idx <= min(m, n) / 2; idx ++){
+        peel(idx);
+        rotate(idx);
     }
-
-    int arr_idx;
-    for (idx = 1; idx <= min(n, m) / 2; idx ++){
-        arr_idx = 0;
-        i = idx;
-        arr[idx][idx] = v[idx][(arr_idx ++ + r) % v[idx].size()];
-        for (j = idx + 1; j <= (m + 1) - idx; j ++){
-            arr[i][j] = v[idx][(arr_idx ++ + r) % v[idx].size()];
-        }j --;
-        for (i = idx + 1; i <= (n + 1) - idx; i ++){
-            arr[i][j] = v[idx][(arr_idx ++ + r) % v[idx].size()];
-        }i --;
-        for (j = j - 1; j >= idx; j --){
-            arr[i][j] = v[idx][(arr_idx ++ + r) % v[idx].size()];
-        }j ++;
-        for (i = i - 1; i > idx; i --){
-            arr[i][j] = v[idx][(arr_idx ++ + r) % v[idx].size()];
-        }i ++;
-    }
-
 
     for (int i = 1; i <= n; i ++){
         for (int j = 1; j <= m; j ++){

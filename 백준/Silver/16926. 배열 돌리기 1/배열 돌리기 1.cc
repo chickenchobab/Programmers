@@ -25,8 +25,7 @@ void peel(int idx){
     skin.clear();
 
     i = idx;
-    skin.push_back(arr[idx][idx]);
-    for (j = idx + 1; j <= (m + 1) - idx; j ++){
+    for (j = idx; j <= (m + 1) - idx; j ++){
         skin.push_back(arr[i][j]);
     }j --;
     for (i = idx + 1; i <= (n + 1) - idx; i ++){
@@ -48,8 +47,7 @@ void rotate(int idx){
     int skin_size = skin.size();
 
     i = idx;
-    arr[idx][idx] = skin[(arr_idx ++ + r) % skin_size];
-    for (j = idx + 1; j <= (m + 1) - idx; j ++, arr_idx ++){
+    for (j = idx; j <= (m + 1) - idx; j ++, arr_idx ++){
         arr[i][j] = skin[(arr_idx + r) % skin_size];
     }j --;
     for (i = idx + 1; i <= (n + 1) - idx; i ++, arr_idx ++){

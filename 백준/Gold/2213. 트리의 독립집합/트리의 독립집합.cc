@@ -31,12 +31,7 @@ void dfs(int prv, int cur){
     for (int nxt : edge[cur]){
         if (nxt == prv) continue;
         dfs(cur, nxt);
-        if (dp[nxt][1] > dp[nxt][0]) {
-            dp[cur][0] += dp[nxt][1];
-        }
-        else {
-            dp[cur][0] += dp[nxt][0];
-        }
+        dp[cur][0] += max(dp[nxt][0], dp[nxt][1]);
         dp[cur][1] += dp[nxt][0];
     }
 }

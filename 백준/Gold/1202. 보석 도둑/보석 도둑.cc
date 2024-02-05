@@ -15,11 +15,8 @@ void input(){
     ios::sync_with_stdio(false);
     cout.tie(0);
     cin >> n >> m;
-    //jewel[0] = {0, 0};
-    int a, b;
     for (int i = 1; i <= n; i ++){
-        cin >> a >> b;
-        jewel[i] = {a, b};
+        cin >> jewel[i].first >> jewel[i].second;
     }
     for (int i = 1; i <= m; i ++){
         cin >> capacity[i];

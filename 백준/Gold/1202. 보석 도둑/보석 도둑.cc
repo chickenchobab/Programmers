@@ -9,7 +9,6 @@ typedef long long ll;
 
 int n, m;
 int capacity[300001];
-
 p jewel[300001];
 
 void input(){

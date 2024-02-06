@@ -5,9 +5,17 @@
 using namespace std;
 
 int t,n,k,a,b,w;
-int time[1001], ind[1001], dp[1001];
+int time[1001],dp[1001];
 vector<int> graph[1001];
-queue<int> q;
+
+int solve(int u){
+    if(dp[u]!=-1)   return dp[u];
+    int res=0;
+    for(int v: graph[u]){
+        res=max(res,solve(v)+time[v]);
+    }
+    return dp[u]=res;
+}
 
 int main(){
 
@@ -17,42 +25,20 @@ int main(){
     cin>>t;
     while(t--){
         cin>>n>>k;
-        while(!q.empty()){
-            q.pop();
-        }
+
         for(int i=1;i<=n;i++){
-            ind[i]=0; dp[i]=0;
+            dp[i]=-1;
             graph[i].clear();
             cin>>time[i];
         }
+
         for(int i=1;i<=k;i++){
             cin>>a>>b;
-            graph[a].push_back(b);
-            ind[b]++;
+            graph[b].push_back(a);
         }
         cin>>w;
-
-        for(int i=1;i<=n;i++){
-            if(!ind[i]) {
-                q.push(i);
-                dp[i]=time[i];
-            }
-        }
-
-        while(!q.empty()){
-            int u=q.front();
-            q.pop();
-            if(u==w){
-                cout<<dp[w]<<'\n';
-                break;
-            }
-            for(int v:graph[u]){
-                dp[v]=max(dp[v], dp[u]+time[v]);
-                if(--ind[v]==0)
-                    q.push(v);
-            }
-        }
-
+        solve(w);
+        cout<<dp[w]+time[w]<<'\n';
     }
 
     return 0;

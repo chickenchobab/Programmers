@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <queue>
 #include <vector>
-#include <tuple>
 #include <cstring>
 #define MAX 444
 
@@ -103,21 +102,11 @@ void make_graph(){
     }
 }
 
-void show_graph(){
-    for (int i = 0; i < cnt; i ++){
-        for (int j = 0; j < cnt; j ++) {
-            cout << graph[i][j] << ' ';
-        }
-        cout << '\n';
-    }
-}
-
 int main(){
     init();
     while (1){
         if(!input()) break;
         make_graph();
-        // show_graph();
 
         ans = dfs(0, 1);
         status == (1 << cnt) - 1 ? cout << ans : cout << -1;

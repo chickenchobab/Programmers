@@ -1,9 +1,11 @@
 #include <iostream>
-#include <unordered_map>
+#include <set>
 using namespace std;
 
 int n, m;
 int train[100001];
+set<int> check;
+
 
 void init(){
     ios::sync_with_stdio(false);
@@ -43,11 +45,13 @@ int solve(){
         cin >> cmd >> idx;
         carry_out(cmd, idx);
     }
-    unordered_map<int, int> m;
-    for(int i = 1; i <= n; i ++){
-        m.insert({train[i], i});
+    for (int i = 1; i <= n; i ++){
+        if (check.find(train[i]) == check.end()){
+            cnt ++;
+            check.insert(train[i]);
+        }
     }
-    return m.size();
+    return cnt;
 }
 
 int main(){

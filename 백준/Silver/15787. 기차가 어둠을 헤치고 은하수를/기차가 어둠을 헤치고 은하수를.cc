@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <unordered_map>
 using namespace std;
 
 int n, m;
@@ -24,14 +24,17 @@ void carry_out(int cmd, int idx){
     int seat;
     if (cmd == 1){
         cin >> seat;
-        train[idx] = train[idx] | (1 << (seat - 1)) & ((1 << 20) - 1);
+        train[idx] |= (1 << (seat - 1));
     }
     else if (cmd == 2){
         cin >> seat;
-        train[idx] = train[idx] & ~(1 << (seat - 1)) & ((1 << 20) - 1);
+        train[idx] &= (~(1 << (seat - 1)));
     }
-    else if (cmd == 3) train[idx] = train[idx] << 1 & ((1 << 20) - 1); 
-    else train[idx] = train[idx] >> 1 & ((1 << 20) - 1); 
+    else if (cmd == 3) {
+        train[idx] <<= 1;
+        train[idx] &= ((1 << 20) - 1);
+    }
+    else train[idx] >>= 1; 
 }
 
 int solve(){
@@ -40,18 +43,11 @@ int solve(){
         cin >> cmd >> idx;
         carry_out(cmd, idx);
     }
-    for (int i = 1; i <= n; i ++){
-        int flag = 1;
-        for (int j = 1; j <= i - 1; j ++){
-            if (train[j] == train[i]) {
-                flag = 0;
-                break;
-            }
-        }
-        if (flag) cnt ++;
+    unordered_map<int, int> m;
+    for(int i = 1; i <= n; i ++){
+        m.insert({train[i], i});
     }
-
-    return cnt;
+    return m.size();
 }
 
 int main(){

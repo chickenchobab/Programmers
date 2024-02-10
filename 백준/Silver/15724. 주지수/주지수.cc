@@ -3,7 +3,7 @@
 using namespace std;
 
 int n, m, k;
-int map[1025][1025], sum[1025][1025];
+int sum[1025][1025];
 
 void input(){
     ios::sync_with_stdio(false);
@@ -12,8 +12,8 @@ void input(){
     cin >> n >> m;
     for (int i = 1; i <= n; i ++){
         for (int j = 1; j <= m; j ++){
-            cin >> map[i][j];
-            sum[i][j] = map[i][j] + sum[i][j - 1] + sum[i - 1][j] - sum[i - 1][j - 1];
+            cin >> sum[i][j];
+            sum[i][j] = sum[i][j] + sum[i][j - 1] + sum[i - 1][j] - sum[i - 1][j - 1];
         }
     }
 }

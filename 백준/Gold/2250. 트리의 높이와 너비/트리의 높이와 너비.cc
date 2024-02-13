@@ -23,8 +23,6 @@ void input(){
 
         ind[l] ++;
         ind[r] ++;
-
-        min_idx[i] = 10001;
     }
 }
 
@@ -35,9 +33,8 @@ void dfs(int cur, int lev){
     dfs(edges[cur][0], lev + 1);
     
     col ++;
-    min_idx[lev] = min(min_idx[lev], col);
-    max_idx[lev] = max(max_idx[lev], col);
-    // cout << cur << ": " << col << '\n';
+    if (min_idx[lev] == 0) min_idx[lev] = max_idx[lev] = col;
+    else max_idx[lev] = col;
 
     dfs(edges[cur][1], lev + 1);
 }

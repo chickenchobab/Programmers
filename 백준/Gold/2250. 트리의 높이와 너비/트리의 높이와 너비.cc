@@ -1,6 +1,5 @@
 #include <iostream>
 #include <algorithm>
-#include <vector>
 using namespace std;
 
 int n;
@@ -48,7 +47,7 @@ int main(){
     dfs(start, 1);
 
     int width = 1, level = 1;
-    for (int i = 1; i <= n && min_idx[i] != 10001 && max_idx[i]; i ++){
+    for (int i = 1; min_idx[i] && max_idx[i]; i ++){
         int res = max_idx[i] - min_idx[i] + 1;
         if (width < res){
             width = res;

@@ -4,7 +4,7 @@
 using namespace std;
 
 int n;
-vector<int> edges[10001];
+int tree[10001][2];
 
 int min_idx[10001], max_idx[10001], ind[10001];
 int col;
@@ -18,8 +18,8 @@ void input(){
     int p, l, r;
     for (int i = 1; i <= n; i ++){
         cin >> p >> l >> r;
-        edges[p].push_back(l);
-        edges[p].push_back(r);
+        tree[p][0] = l;
+        tree[p][1] = r;
 
         ind[l] ++;
         ind[r] ++;
@@ -30,13 +30,13 @@ void dfs(int cur, int lev){
 
     if (cur == -1) return;
 
-    dfs(edges[cur][0], lev + 1);
+    dfs(tree[cur][0], lev + 1);
     
     col ++;
     if (min_idx[lev] == 0) min_idx[lev] = max_idx[lev] = col;
     else max_idx[lev] = col;
 
-    dfs(edges[cur][1], lev + 1);
+    dfs(tree[cur][1], lev + 1);
 }
 
 int main(){

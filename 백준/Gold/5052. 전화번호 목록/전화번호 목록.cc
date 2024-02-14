@@ -5,16 +5,16 @@ using namespace std;
 int t;
 int n;
 struct Trie {
-    Trie* ch[26];
+    Trie* ch[10];
     bool end;
 
     Trie(){
         end = false;
-        for (int i = 0; i < 26; i ++) ch[i] = NULL;
+        for (int i = 0; i < 10; i ++) ch[i] = NULL;
     }
 
     ~Trie(){
-        for (int i = 0; i < 26; i ++) if (ch[i]) delete ch[i];
+        for (int i = 0; i < 10; i ++) if (ch[i]) delete ch[i];
     }
 
     void insert(const char* cur){

@@ -5,7 +5,7 @@ using namespace std;
 
 int n, m;
 vector<int> edge[50005];
-int level[50005], visited[50005];
+int level[50005], parent[50005];
 
 void input(){
     fastio
@@ -23,21 +23,23 @@ void check_level(int cur){
     for (int nxt : edge[cur]){
         if (level[nxt]) continue;
         level[nxt] = level[cur] + 1;
+        parent[nxt] = cur;
         check_level(nxt);
     }
 }
 
-int dfs(int cur){
+int lca(int a, int b){
 
-    if (visited[cur]) return cur;
-    else visited[cur] = 1;
+    if (level[a] < level[b]) swap(a, b);
 
-    for (int nxt : edge[cur]){
-        if (level[nxt] > level[cur]) continue;
-        return dfs(nxt);
+    while (level[a] != level[b]) a = parent[a];
+
+    while (a != b){
+        a = parent[a];
+        b = parent[b];
     }
 
-    return cur;
+    return a;
 }
 
 
@@ -49,15 +51,9 @@ int main(){
 
     cin >> m;
     int a, b;
-    int ans1, ans2;
     while (m --){
         cin >> a >> b;
-        for (int i = 1; i <= n; i ++) visited[i] = 0;
-        
-        ans1 = dfs(a);
-        ans2 = dfs(b);
-        level[ans1] > level[ans2] ? cout << ans1 : cout << ans2;
-        cout << '\n';
+        cout << lca(a, b) << '\n';
     }
 
     return 0;

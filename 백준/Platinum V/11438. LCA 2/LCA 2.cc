@@ -8,7 +8,7 @@ int n, m;
 int max_lev;
 vector<int> edge[100001];
 int level[100001];
-vector<int> parent[100001];
+int parent[100001][18];
 
 void input(){
     fastio
@@ -19,10 +19,10 @@ void input(){
         edge[a].push_back(b);
         edge[b].push_back(a);
     }
-    max_lev = (int)floor(log2(n + 1));
-    for (int i = 0; i <= n; i ++){
-        parent[i].resize(max_lev + 1, 0);
-    }
+    max_lev = (int)floor(log2(100001));
+    // for (int i = 0; i <= n; i ++){
+    //     parent[i].resize(max_lev + 1, 0);
+    // }
 }
 
 void set_tree(int cur){

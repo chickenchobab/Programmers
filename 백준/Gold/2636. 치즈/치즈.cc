@@ -1,17 +1,18 @@
 #include <iostream>
+#include <algorithm>
 #include <queue>
+#define fastio ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
 
 using namespace std;
 
 int n, m, total;
 int map[101][101];
-int di[] = {1, -1, 0, 0}, dj[] = {0, 0, 1, -1};
+
 typedef pair<int, int> p;
+int di[] = {1, -1, 0, 0}, dj[] = {0, 0, 1, -1};
 
 void input(){
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
+    fastio
     cin >> n >> m;
     for (int i = 1; i <= n; i ++){
         for (int j = 1; j <= m; j ++){
@@ -21,68 +22,58 @@ void input(){
     }
 }
 
-// 점이 엣지인지 확인한다
-bool find_edge(int i, int j){
-    for (int d = 0; d < 4; d ++){
-        int ni = i + di[d];
-        int nj = j + dj[d];
-        if (ni < 1 || ni > n || nj < 1 || nj > m) continue;
-        if (map[ni][nj] == -1) return true;
-    }
-    return false;
-}
+int bfs(){
+    queue<p> q;
+    int visited[101][101] = {0,};
 
-// 내부 공기를 외부 공기로 바꾼다
-void change_air(int i, int j){
-    map[i][j] = -1;
-    for (int d = 0; d < 4; d ++){
-        int ni = i + di[d], nj = j + dj[d];
-        if (ni < 1 || ni > n || nj < 1 || nj > m) continue;
-        if (map[ni][nj]) continue;
-        change_air(ni, nj);
-    }
-}
+    q.push({1, 1});
+    visited[1][1] = 1;
 
-int solve(){
     int melted = 0;
 
-    queue<p> q;
-    for (int i = 1; i <= n; i ++){
-        for (int j = 1; j <= m; j ++){
-            if (map[i][j] != 1) continue;
-            if (find_edge(i, j)) {
-                q.push({i, j});
+    while (q.size()){
+        int i = q.front().first, j = q.front().second;
+        q.pop();
+        for (int d = 0; d < 4; d ++){
+            int ni = i + di[d], nj = j + dj[d];
+            if (ni < 1 || ni > n || nj < 1 || nj > m) continue;
+            if (visited[ni][nj]) continue;
+            if (map[ni][nj] == 1){
+                map[ni][nj] = -1;
+                //cout << ni << ' ' << nj << '\n';
+                melted ++;
+                continue;
+            }
+            if (map[ni][nj] == 0) {
+                visited[ni][nj] = 1;
+                q.push({ni, nj});
             }
         }
     }
 
-    melted = q.size();
+    if (melted == 0) return 0;
 
-    while(q.size()){
-        int i = q.front().first, j = q.front().second;
-        q.pop();
-        map[i][j] = -1;
-        for (int d = 0; d < 4; d ++){
-            int ni = i + di[d], nj = j + dj[d];
-            if (ni < 1 || ni > n || nj < 1 || nj > m) continue;
-            if (map[ni][nj]) continue;
-            change_air(ni, nj);
+    for (int i = 1; i <= n; i ++){
+        for (int j = 1; j <= m; j ++){
+            if (map[i][j] == -1){
+                map[i][j] = 0;
+            }
         }
     }
-
     return melted;
 }
 
 int main(){
     input();
-    change_air(1, 1);
-    int ans = 0, cnt = 100 * 100;
-    while(int melted = solve()){
-        if (melted) {
-            ans ++;
-            cnt = min(cnt, total);
+    int ans = 100 * 100, cnt = 0;
+    while(total > 0){
+        if (int melted = bfs()){
+            cnt ++;
+            ans = min(ans, total);
             total -= melted;
+            //cout << total << ' ' << melted << '\n';
         }
     }
-    cout << ans << '\n' << cnt;
+    cout << cnt << '\n' << ans;
+    return 0;
 }

@@ -24,15 +24,6 @@ void input(){
     cin >> h >> w >> si >> sj >> fi >> fj;
 }
 
-void show(){
-    for (int i = 1; i <= n; i ++){
-        for (int j = 1; j <= m; j ++){
-            cout << visited[i][j] << ' ';
-        }
-        cout << '\n';
-    }
-}
-
 bool path_check(int ni, int nj){
     if (ni < 1 || ni > n || nj < 1 || nj > m) return false;
     if (map[ni][nj]) return false;
@@ -48,8 +39,6 @@ bool initial_check(){
     }
     return true;
 }
-
-
 
 bool check(int ni, int nj, int d){
     if (!path_check(ni, nj)) return false;
@@ -78,6 +67,8 @@ int bfs(){
         int i = q.front().first, j = q.front().second;
         q.pop();
 
+        if (i == fi && j == fj) return visited[i][j] - 1;
+
         for (int d = 0; d < 4; d ++){
             int ni = i + di[d], nj = j + dj[d];
             if (visited[ni][nj]) continue;
@@ -87,13 +78,11 @@ int bfs(){
         }
     }
 
-    if (visited[fi][fj]) return visited[fi][fj] - 1;
     return -1;
 }
 
 int main(){
     input();
     cout << bfs();;
-    // show();
     return 0;
 }

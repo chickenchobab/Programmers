@@ -1,54 +1,81 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#define fastio ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+
 using namespace std;
- 
-const int dir[4][2] = { { -1,0 },{ 1,0 },{ 0,-1 },{ 0,1 } };
-int n, m, h, w, g[1001][1001], dp[1001][1001], sr, sc, dr, dc;
-bool vis[1001][1001];
- 
-int go(int r, int c) {
-	if (r < 0 || c < 0) return 0;
-	int& ret = dp[r][c];
-	if (ret != -1) return ret;
-	return ret = go(r - 1, c) + go(r, c - 1) - go(r - 1, c - 1) + g[r][c];
+
+int n, m;
+int h, w, si, sj, fi, fj;
+int map[1001][1001];
+
+typedef pair<int, int> p;
+int visited[1001][1001], wall[1001][1001];
+int di[] = {1, 0, -1, 0}, dj[] = {0, 1, 0, -1};
+
+void input(){
+    fastio
+    cin >> n >> m;
+
+    for (int i = 1; i <= n; i ++){
+        for (int j = 1; j <= m; j ++){
+            cin >> map[i][j];
+        }
+    }
+    cin >> h >> w >> si >> sj >> fi >> fj;
+
+    wall[1][1] = map[1][1];
+    for (int i = 1; i <= n; i ++){
+        for (int j = 1; j <= m; j ++){
+            wall[i][j] = map[i][j] + wall[i - 1][j] + wall[i][j - 1] - wall[i - 1][j - 1];
+        }
+    }
 }
- 
-void bfs() {
-	int cr, cc, nr, nc, cost, cnt, a, b, c, d;
-	queue<tuple<int, int, int>> q;
-	vis[sr][sc] = 1;
-	q.push({ sr,sc,0 });
-	while (!q.empty()) {
-		tie(cr, cc, cost) = q.front(); q.pop();
-		if (cr == dr && cc == dc) {
-			cout << cost;
-			return;
-		}
-		for (int i = 0; i < 4; i++) {
-			nr = cr + dir[i][0], nc = cc + dir[i][1];
-			if (nr < 0 || nr >= n || nc < 0 || nc >= m || vis[nr][nc] || g[nr][nc] || nr + h - 1 >= n || nc + w - 1 >= m) continue;
-			a = nr, b = nc, c = nr + h - 1, d = nc + w - 1;
-			cnt = go(c, d) - go(a - 1, d) - go(c, b - 1) + go(a - 1, b - 1);
-			if (cnt) continue;
-			vis[nr][nc] = 1;
-			q.push({ nr,nc,cost + 1 });
-		}
-	}
-	cout << -1;
+
+bool path_check(int i1, int j1, int i2, int j2){
+    if (wall[i2][j2] - wall[i1 - 1][j2] - wall[i2][j1 - 1] + wall[i1 - 1][j1 - 1]) return false;
+    return true;
 }
- 
-int main() {
-	cin.tie(NULL); cout.tie(NULL);
-	ios_base::sync_with_stdio(false);
-	memset(dp, -1, sizeof(dp));
- 
-	cin >> n >> m;
-	for (int i = 0; i < n; i++) 
-		for (int j = 0; j < m; j++) 
-			cin >> g[i][j];
-	dp[0][0] = g[0][0];
-	for (int i = 1; i < n; i++) dp[i][0] = dp[i - 1][0] + g[i][0];
-	for (int i = 1; i < m; i++) dp[0][i] = dp[0][i - 1] + g[0][i];
-	cin >> h >> w >> sr >> sc >> dr >> dc;
-	sr--, sc--, dr--, dc--;
-	bfs();
+
+bool range_check(int ni, int nj){
+    if (ni < 1 || ni > n || nj < 1 || nj > m) return false;
+    return true;
+}
+
+bool check(int i, int j){
+    if (!range_check(i, j) || !range_check(i + h - 1, j + w - 1)) return false;
+    if (!path_check(i, j, i + h - 1, j + w - 1)) return false;
+    return true;
+}
+
+int bfs(){ 
+    queue<p> q;
+
+    if (!check(si, sj)) return -1;
+
+    visited[si][sj] = 1;
+    q.push({si, sj});
+
+    while (q.size()){
+        int i = q.front().first, j = q.front().second;
+        q.pop();
+
+        if (i == fi && j == fj) return visited[i][j] - 1;
+
+        for (int d = 0; d < 4; d ++){
+            int ni = i + di[d], nj = j + dj[d];
+            if (visited[ni][nj]) continue;
+            if (!check(ni, nj)) continue;
+            q.push({ni, nj});
+            visited[ni][nj] = visited[i][j] + 1;
+        }
+    }
+
+    return -1;
+}
+
+int main(){
+    input();
+    cout << bfs();;
+    return 0;
 }

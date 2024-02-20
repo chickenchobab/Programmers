@@ -45,11 +45,6 @@ int dfs(int start, int cur, int visited){
 
 int main(){
     input();
-    int ans = INF;
-    for (int i = 0; i < n; i ++){
-        ans = min(ans, dfs(i, i, 1 << i));
-        reset_table();
-    }
-    cout << ans;
+    cout << dfs(0, 0, 1);
     return 0;
 }

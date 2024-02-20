@@ -2,74 +2,70 @@
 #include <algorithm>
 #include <queue>
 #include <tuple>
+#define fastio ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
 
 using namespace std;
 
-typedef tuple<int, int, int> p;
-int m,n,map[101][101];
-int si,sj,sd,ei,ej,ed;
+int n, m;
+int map[101][101];
+int si, sj, sd, fi, fj, fd;
 
-int visited[101][101][4], di[]={0,0,1,-1}, dj[]={1,-1,0,0};
+typedef tuple<int, int, int> p;
+int visited[101][101][4];
+int di[] = {0, 0, 1, -1}, dj[] = {1, -1, 0, 0};
 queue<p> q;
 
-void bfs(){
-    q.push({si,sj,sd});
-    visited[si][sj][sd-1]=1;
-
-    while(!q.empty()){ 
-        p u=q.front();
-        int i=get<0>(u), j=get<1>(u), d=get<2>(u);
-        q.pop();
-        for(int s=1;s<=4;s++){
-            for(int k=1;k<=3;k++){
-                int ni=i+k*di[s-1], nj=j+k*dj[s-1];
-
-                if(s!=d) break;
-                if(ni>m || ni<1 || nj>n || nj<1) break;
-                if(map[ni][nj]) break;
-
-                if(visited[ni][nj][s-1]) continue;
-            
-                q.push({ni,nj,s});
-                visited[ni][nj][s-1]=visited[i][j][d-1]+1;
-                }
-            }
-            
-
-        for(int s=1;s<=4;s++){
-            if(s+d==3 || s+d==7) continue;
-            if(visited[i][j][s-1]) continue;
-
-            q.push({i,j,s});
-            visited[i][j][s-1]=visited[i][j][d-1]+1;
+void input(){
+    fastio
+    cin >> n >> m;
+    for (int i = 1; i <= n; i ++){
+        for (int j = 1; j <= m; j ++){
+            cin >> map[i][j];
         }
+    }
+    cin >> si >> sj >> sd >> fi >> fj >> fd;
+    sd --; fd --;
+}
+
+int turn(int d1, int d2){
+    if (d1 == d2) return 0;
+    if (d1 < 2 && d2 < 2) return 2;
+    if (d1 > 1 && d2 > 1) return 2;
+    return 1;
+}
+
+int bfs(){
+
+    q.push({si, sj, sd});
+    visited[si][sj][sd] = 1;
+
+    while (q.size()){
+        int i, j, d;
+        tie(i, j, d) = q.front();
+        q.pop();
+
+        if (i == fi && j == fj && d == fd) return visited[fi][fj][fd] - 1;
         
+        for (int str = 1; str <= 3; str ++){
+            int ni = i + str * di[d];
+            int nj = j + str * dj[d];
+            if (ni < 1 || ni > n || nj < 1 || nj > m) break;
+            if (map[ni][nj]) break;
+            if (visited[ni][nj][d]) continue;
+            q.push({ni, nj, d});
+            visited[ni][nj][d] = visited[i][j][d] + 1;
+        }     
+
+        for (int dir = 0; dir < 4; dir ++){
+            if (visited[i][j][dir]) continue;
+            q.push({i, j, dir});
+            visited[i][j][dir] = visited[i][j][d] + turn(d, dir);
+        }
     }
 }
 
 int main(){
-    cin>>m>>n;
-    for(int i=1;i<=m;i++){
-        for(int j=1;j<=n;j++){
-            cin>>map[i][j];
-            for(int k=0;k<4;k++){
-                visited[i][j][k]=0;
-            }
-        }
-    }
-    cin>>si>>sj>>sd>>ei>>ej>>ed;
-    bfs();
-
-    // for(int i=1;i<=m;i++){
-    //     for(int j=1;j<=n;j++){
-    //         for(int k=0;k<4;k++){
-    //             cout<<i<<" "<<j<<" "<<k+1<<": "<<visited[i][j][k]-1<<'\n';
-    //         }
-    //         cout<<endl;
-    //     }
-    // }
-    
-    cout<<visited[ei][ej][ed-1]-1;
-
+    input();
+    cout << bfs();
     return 0;
 }

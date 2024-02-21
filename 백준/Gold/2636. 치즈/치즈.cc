@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int n, m, total;
+int n, m, total, melted;
 int map[101][101];
 
 typedef pair<int, int> p;
@@ -22,15 +22,12 @@ void input(){
     }
 }
 
-int bfs(){
+void bfs(){
     queue<p> q;
     int visited[101][101] = {0,};
 
     q.push({1, 1});
     visited[1][1] = 1;
-
-    int melted = 0;
-
     while (q.size()){
         int i = q.front().first, j = q.front().second;
         q.pop();
@@ -39,41 +36,26 @@ int bfs(){
             if (ni < 1 || ni > n || nj < 1 || nj > m) continue;
             if (visited[ni][nj]) continue;
             if (map[ni][nj] == 1){
-                map[ni][nj] = -1;
-                //cout << ni << ' ' << nj << '\n';
+                map[ni][nj] = 0;
                 melted ++;
-                continue;
             }
-            if (map[ni][nj] == 0) {
-                visited[ni][nj] = 1;
+            else if (map[ni][nj] == 0) {
                 q.push({ni, nj});
             }
+            visited[ni][nj] = 1;
         }
     }
-
-    if (melted == 0) return 0;
-
-    for (int i = 1; i <= n; i ++){
-        for (int j = 1; j <= m; j ++){
-            if (map[i][j] == -1){
-                map[i][j] = 0;
-            }
-        }
-    }
-    return melted;
 }
 
 int main(){
     input();
-    int ans = 100 * 100, cnt = 0;
-    while(total > 0){
-        if (int melted = bfs()){
-            cnt ++;
-            ans = min(ans, total);
-            total -= melted;
-            //cout << total << ' ' << melted << '\n';
-        }
+    int cnt = 0;
+    while(total){
+        melted = 0;
+        bfs();
+        cnt ++;
+        total -= melted;
     }
-    cout << cnt << '\n' << ans;
+    cout << cnt << '\n' << melted;
     return 0;
 }

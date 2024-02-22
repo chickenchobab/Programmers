@@ -6,18 +6,13 @@
 using namespace std;
 
 int n;
-set<char> s;
+//set<char> s;
+bool used[26];
 
 void input(){
     fastio
     cin >> n;
     cin.ignore();
-}
-
-bool char_exist(char ch){
-    if (isupper(ch)) ch = ch - 'A' + 'a';
-    if (s.find(ch) != s.end() || s.find(ch - 'a' + 'A') != s.end()) return true;
-    return false;
 }
 
 int select_key(string str, bool flag){
@@ -26,8 +21,8 @@ int select_key(string str, bool flag){
     int index = -1;
 
     for (int j = 0; j < str.length(); j ++){
-        if (((flag && start_of_word) || (!flag && isalpha(str[j]))) && !char_exist(str[j])){
-            s.insert(str[j]);
+        if (((flag && start_of_word) || (!flag && isalpha(str[j]))) && !used[tolower(str[j]) - 'a']){
+            used[tolower(str[j]) - 'a'] = 1;
             index = j;
             break;
         }

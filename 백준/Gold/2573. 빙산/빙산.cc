@@ -70,8 +70,6 @@ void melt_ice(){
             height[i][j] = max(height[i][j] - (visited[i][j] - 1), 0);
         }
     }
-
-    ans ++;
 }
 
 int main(){
@@ -81,13 +79,13 @@ int main(){
         melt_ice();
         //show();
         if (cnt > 1) {
-            cout << ans - 1;
+            cout << ans;
             return 0;
         }
         if (cnt == 0){
             cout << 0;
             return 0;
         }
-
+        ans ++;
     }
 }

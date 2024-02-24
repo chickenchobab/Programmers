@@ -6,17 +6,18 @@
 using namespace std;
 
 int k, l;
-int q;
 string ladder[1000 + 1 + 1];
-string ss, ee;
+string in, out;
+
+int q;
 
 void input(){
     fastio
     cin >> k >> l;
 
-    ss = "";
-    for (int i = 0; i < k; i ++) ss += 'A' + i;
-    cin >> ee;
+    in = "";
+    for (int i = 0; i < k; i ++) in += 'A' + i;
+    cin >> out;
 
     for (int i = 1; i <= l; i ++){
         cin >> ladder[i];
@@ -37,16 +38,16 @@ int move_up(int i, int j){
 }
 
 void solve(){
-    char s[k], e[k];
     
-    int i, j;
+    char s[k], e[k];
+    int i, j, flag = 0;
 
     for (int idx = 0; idx < k; idx ++){
         j = idx;
         for (i = 0; i + 1 != q; i ++) {
             j = move_down(i, j);
         }
-        s[j] = ss[idx];
+        s[j] = in[idx];
     }
 
     for (int idx = 0; idx < k; idx ++){
@@ -54,30 +55,21 @@ void solve(){
         for (i = l + 1; i - 1 != q; i --) {
             j = move_up(i, j);
         }
-        e[j] = ee[idx];
+        e[j] = out[idx];
     }
 
+    ladder[q][0] = (s[0] == e[0])? '*' : '-';
 
-    // for (int i = 0; i < k; i ++) cout << s[i];
-    // cout << '\n';
-    // for (int i = 0; i < k; i ++) cout << e[i];
-    // cout << '\n';
-
-    int flag = 0;
-
-    for (int idx = 0; idx < k - 1; idx ++){
+    for (int idx = 1; idx < k - 1; idx ++){
         if (s[idx] == e[idx]) {
-            if (idx > 0 && ladder[q][idx - 1] != '*') {
+            if (ladder[q][idx - 1] != '*') {
                 flag = 1;
                 break;
             }
             ladder[q][idx] = '*';
         }
         else {
-            if (idx == 0){
-                ladder[q][idx] = '-';
-            }
-            else if (ladder[q][idx - 1] != '-'){
+            if (ladder[q][idx - 1] != '-'){
                 ladder[q][idx] = '-';
             }
             else if (ladder[q][idx - 1] == '-'){

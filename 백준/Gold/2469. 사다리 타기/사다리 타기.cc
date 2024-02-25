@@ -5,66 +5,54 @@
 
 using namespace std;
 
-int k, l;
-string ladder[1000 + 1 + 1];
-string in, out;
+int m, n;
+string ladder[1001];
+char in[27], out[27];
 
 int q;
 
 void input(){
     fastio
-    cin >> k >> l;
+    string str;
+    cin >> m >> n >> str;
 
-    in = "";
-    for (int i = 0; i < k; i ++) in += 'A' + i;
-    cin >> out;
+    for (int i = 0; i < m; i ++) {
+        in[i] = 'A' + i;
+        out[i] = str[i];
+    }
 
-    for (int i = 1; i <= l; i ++){
+    for (int i = 0; i < n; i ++){
         cin >> ladder[i];
         if (ladder[i].front() == '?') q = i;
     }
 }
 
-int move_down(int i, int j){
-    if (j > 0 && ladder[i + 1][j - 1] == '-') return j - 1;
-    if (j < k && ladder[i + 1][j] == '-') return j + 1;
-    return j;
+void input_down(){
+    for (int i = 0; i < q; i ++){
+        for (int j = 0; j < m - 1; j ++){
+            if (ladder[i][j] == '-')
+                swap(in[j], in[j + 1]);
+        }
+    }
 }
 
-int move_up(int i, int j){
-    if (j > 0 && ladder[i - 1][j - 1] == '-') return j - 1;
-    if (j < k && ladder[i - 1][j] == '-') return j + 1;
-    return j;
+void output_up(){
+    for (int i = n - 1; i > q; i --){
+        for (int j = 0; j < m - 1; j ++){
+            if (ladder[i][j] == '-')
+                swap(out[j], out[j + 1]);
+        }
+    }
 }
 
-void solve(){
-    
-    char s[k], e[k];
-    int i, j, flag = 0;
+bool compare_up_down(){
 
-    for (int idx = 0; idx < k; idx ++){
-        j = idx;
-        for (i = 0; i + 1 != q; i ++) {
-            j = move_down(i, j);
-        }
-        s[j] = in[idx];
-    }
+    ladder[q][0] = (in[0] == out[0])? '*' : '-';
 
-    for (int idx = 0; idx < k; idx ++){
-        j = idx;
-        for (i = l + 1; i - 1 != q; i --) {
-            j = move_up(i, j);
-        }
-        e[j] = out[idx];
-    }
-
-    ladder[q][0] = (s[0] == e[0])? '*' : '-';
-
-    for (int idx = 1; idx < k - 1; idx ++){
-        if (s[idx] == e[idx]) {
+    for (int idx = 1; idx < m - 1; idx ++){
+        if (in[idx] == out[idx]) {
             if (ladder[q][idx - 1] != '*') {
-                flag = 1;
-                break;
+                return false;
             }
             ladder[q][idx] = '*';
         }
@@ -78,12 +66,18 @@ void solve(){
         }
     }
     
+    return true;
+}
 
-    if (flag) {
-        for (int i = 0; i < k - 1; i ++) cout << 'x';
-    }
+
+void solve(){
+
+    input_down();
+    output_up();
+
+    if (compare_up_down()) cout << ladder[q];
     else {
-        cout << ladder[q];
+        for (int i = 0; i < m - 1; i ++) cout << 'x';
     }
 }
 

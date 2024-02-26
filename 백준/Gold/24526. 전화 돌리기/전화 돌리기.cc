@@ -10,7 +10,7 @@ int n, m;
 set<int> edge[100001];
 
 int visit_count, cycle_count;
-int indegree[100001], visited[100001];  // 1:in stack, 2:out of stack, 3:out of stack(cycle factor)
+int visited[100001];  // 1:in stack, 2:out of stack, 3:out of stack(cycle factor)
 
 void input(){
     fastio
@@ -18,10 +18,7 @@ void input(){
     int u, v;
     for (int i = 0; i < m; i ++){
         cin >> u >> v;
-        if (edge[u].find(v) == edge[u].end()){
-            edge[u].insert(v);
-            indegree[v] ++;
-        } 
+        edge[u].insert(v);
     }
 }
 

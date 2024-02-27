@@ -9,9 +9,8 @@ using namespace std;
 int n, c, m;
 typedef tuple<int, int, int> box;
 box boxes[10001];
-
 typedef long long ll;
-ll box_per_town[2002];
+int quota[2002]; // allotment per town
 
 void input(){
     fastio
@@ -24,41 +23,41 @@ void input(){
 }
 
 void solve(){
-    
-    int load = 0;
-    ll sum = 0;
+    int load = 0, unload = 0;
 
     sort(boxes + 1, boxes + m + 1);
 
-    int s, e, num;
+    int s = 1, e = 1, num = 0;
     for (int i = 1; i <= m; i ++){
-
+        
         tie(s, e, num) = boxes[i];
 
-        if (box_per_town[s]){
-            load -= box_per_town[s];
-            sum += box_per_town[s];
-            box_per_town[s] = 0;
+        for (int j = 1; j <= s; j ++){
+            if (quota[j] == 0) continue;
+            // cout << s << ": " << j << " unload by " << quota[j] << " and load is " << load - quota[j] << '\n';
+            load -= quota[j];
+            unload += quota[j];
+            quota[j] = 0;
         }
 
         for (int j = n; j > e && num && load + num > c; j --){
-            if (box_per_town[j] == 0)  continue;
-
-            ll l = min((ll) num, box_per_town[j]);
-            if (load + (num - l) < c) l = load + num - c;
-            box_per_town[j] -= l;
-            box_per_town[e] += l;
+            if (quota[j] == 0) continue;
+            int l = min(num, quota[j]);
+            if (load + num - l < c) l = load + num - c;
+            quota[j] -= l;
+            quota[e] += l;
             num -= l;
-        }
+            // cout << s << ": " << j << " is replaced with " << e << " by " << l << '\n';
+        }   
         
         int l = min(num, c - load);
-        box_per_town[e] += l;
+        quota[e] += l;
         load += l;
+        // cout << s << ": " << e << " load by " << l << " ans load is " << load << '\n';
     }
 
-    sum += load;
-
-    cout << sum;
+    unload += load;
+    cout << unload;
 }
 
 int main(){

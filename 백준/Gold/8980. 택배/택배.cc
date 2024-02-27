@@ -10,7 +10,8 @@ int n, c, m;
 typedef tuple<int, int, int> box;
 box boxes[10001];
 
-int box_per_town[2002];
+typedef long long ll;
+ll box_per_town[2002];
 
 void input(){
     fastio
@@ -25,7 +26,7 @@ void input(){
 void solve(){
     
     int load = 0;
-    int sum = 0;
+    ll sum = 0;
 
     sort(boxes + 1, boxes + m + 1);
 
@@ -43,7 +44,7 @@ void solve(){
         for (int j = n; j > e && num && load + num > c; j --){
             if (box_per_town[j] == 0)  continue;
 
-            int l = min(num, box_per_town[j]);
+            ll l = min((ll) num, box_per_town[j]);
             if (load + (num - l) < c) l = load + num - c;
             box_per_town[j] -= l;
             box_per_town[e] += l;

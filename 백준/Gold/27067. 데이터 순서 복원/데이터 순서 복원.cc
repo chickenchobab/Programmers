@@ -44,13 +44,6 @@ void make_graph(){
         }
     }
 
-    // for (int i = 0; i < 3; i ++){
-    //     for (int j = 1; j <= n; j ++){
-    //         cout << arr[i][j] << ' ';
-    //     }
-    //     cout << '\n';
-    // }
-
     for (int i = 0; i < 3; i ++){
         int a, b;
         a = arr[i][0];

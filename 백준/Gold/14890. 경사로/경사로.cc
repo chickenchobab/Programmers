@@ -30,12 +30,12 @@ void move(int i, int j, int dir, int flat_cnt, int slope_cnt){
 
     int ni = i + di[dir], nj = j + dj[dir];
     if (height[i][j] == height[ni][nj]) {
-        if (slope_cnt > 0 && slope_cnt < l) move(ni, nj, dir, flat_cnt + 1, slope_cnt + 1);
+        if (slope_cnt > 0 && slope_cnt < l) move(ni, nj, dir, 0, slope_cnt + 1);
         else if (slope_cnt == l) move(ni, nj, dir, 1, 0);
         else move(ni, nj, dir, flat_cnt + 1, 0);
     }
-    else if (height[i][j] - height[ni][nj] == 1 && ((slope_cnt == l) || (slope_cnt == 0))) move(ni, nj, dir, 1, 1);
-    else if (height[ni][nj] - height[i][j] == 1 && flat_cnt >= l && slope_cnt == 0) move(ni, nj, dir, 1, 0);
+    else if (height[i][j] - height[ni][nj] == 1 && ((slope_cnt == l) || (slope_cnt == 0))) move(ni, nj, dir, 0, 1);
+    else if (height[ni][nj] - height[i][j] == 1 && flat_cnt >= l) move(ni, nj, dir, 1, 0);
 }
 
 

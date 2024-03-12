@@ -7,7 +7,7 @@
 
 using namespace std;
 
-typedef long long ll;
+typedef unsigned long long ll;
 typedef pair<ll, int> p;
 int n, m;
 vector<p> edges[100001];

@@ -12,8 +12,7 @@ typedef pair<ll, int> p;
 int n, m;
 vector<p> edges[100001];
 
-ll dist[100001];
-priority_queue<p, vector<p>, greater<p>> pq;
+
 
 void input(){
     fastio
@@ -28,6 +27,9 @@ void input(){
 
 
 void dijkstra(){
+
+    ll dist[100001];
+    priority_queue<p, vector<p>, greater<p>> pq;
 
     for (int i = 2; i <= n; i ++) dist[i] = INF;
     pq.push({0, 1});
@@ -49,11 +51,13 @@ void dijkstra(){
             }
         }
     }
+
+    cout << dist[n];
 }
 
 int main(){
     input();
     dijkstra();
-    cout << dist[n];
+    
     return 0;
 }

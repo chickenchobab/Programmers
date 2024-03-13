@@ -9,7 +9,8 @@ using namespace std;
 int n;
 vector<int> edges[100000];
 
-int connected[100000], turn_idx[100000], turn_cnt[100000];
+int connected[100000];
+bool pruned[100000];
 deque<int> q;
 vector<int> ans;
 
@@ -27,38 +28,48 @@ void input(){
 }
 
 void print(){
-    sort(ans.begin(), ans.end());
-    for (int tmp : ans) cout << tmp << ' ';
+    for (int i = 0; i < n; i ++){
+        if (pruned[i] == 0) cout << i << ' ';
+    }
+}
+
+void prune(){
+    for (int i = 0; i < n; i ++){
+        if (connected[i] == 1) pruned[i] = 1;
+    }
 }
 
 void toposort(){
 
+    int cnt = 0;
+    
     for (int i = 0; i < n; i ++) {
         if (connected[i] == 1) {
             q.push_back(i);
-            turn_idx[i] = 0;
-            turn_cnt[0] ++;
+            cnt ++;
         }
     }
 
-    while (q.size()){
-        int u = q.front();
-        q.pop_front();
-        connected[u] --;
-
-        if (turn_cnt[turn_idx[u]] <= 2) {
-            ans.push_back(u);
+    if (cnt <= 2) return;
+    prune();
+    
+    while (q.size() > 2){
+        int loop = q.size();
+        vector<int> nxt;
+        while (loop --){
+            int u = q.front();
+            q.pop_front();
+            connected[u] --;
+            for (int v : edges[u]){
+                if(-- connected[v] == 1 && pruned[v] == 0) {
+                    q.push_back(v);
+                    nxt.push_back(v);
+                }
+            }
         }
-
-        for (int v : edges[u]){
-            if (-- connected[v] == 1){
-                q.push_back(v);
-                turn_idx[v] = turn_idx[u] + 1;
-                turn_cnt[turn_idx[v]] ++;
-            } 
-        }
+        if (nxt.size() <= 2) return;
+        for (int tmp : nxt) pruned[tmp] = 1;
     }
-
 }
 
 int main(){

@@ -6,16 +6,16 @@
 using namespace std;
 
 int n;
-bool map[65][65];
+bool map[64][64];
 
 void input(){
     fastio
     cin >> n;
     string str;
-    for (int i = 1; i <= n; i ++){
+    for (int i = 0; i < n; i ++){
         cin >> str;
-        for (int j = 1; j <= n; j ++){
-            map[i][j] = str[j - 1] - '0';
+        for (int j = 0; j < n; j ++){
+            map[i][j] = str[j] - '0';
         }
     }
 }
@@ -40,6 +40,6 @@ string solve(int i, int j, int sz){
 
 int main(){
     input();
-    cout << solve(1, 1, n);
+    cout << solve(0, 0, n);
     return 0;
 }

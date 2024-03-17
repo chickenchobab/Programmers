@@ -17,37 +17,31 @@ void input(){
 
 void find_front() {
     int i;
-    for (; s <= e; s ++) {
-        dq_front.push_back(t[s]);
-        if (dq_front.back() == w[l - 1]){
-            if (dq_front.size() < l) continue;
-            for (i = 0; i < l; i ++) {
-                if (dq_front[dq_front.size() - 1 - i] != w[l - 1 - i]) break; 
-            }
-            if (i == l) {
-                while (i --) dq_front.pop_back();
-                s ++;   
-                return;
-            }
+    while (s <= e) {
+        dq_front.push_back(t[s ++]);
+        if (dq_front.back() != w[l - 1] || dq_front.size() < l) continue;
+        for (i = 0; i < l; i ++) {
+            if (dq_front[dq_front.size() - 1 - i] != w[l - 1 - i]) break; 
         }
+        if (i == l) {
+            while (i --) dq_front.pop_back(); 
+            return;
+        }  
     }
 }
 
 void find_back() {
     int i;
-    for (; e >= s; e --) {
-        dq_back.push_front(t[e]);
-        if (dq_back.front() == w[0]){
-            if (dq_back.size() < l) continue;
-            for (i = 0; i < l; i ++) {
-                if (dq_back[i] != w[i]) break;
-            }
-            if (i == l) {
-                while (i --) dq_back.pop_front();
-                e --;
-                return;
-            }
+    while (s <= e) {
+        dq_back.push_front(t[e --]);
+        if (dq_back.front() != w[0] || dq_back.size() < l) continue;
+        for (i = 0; i < l; i ++) {
+            if (dq_back[i] != w[i]) break;
         }
+        if (i == l) {
+            while (i --) dq_back.pop_front();
+            return;
+        } 
     }
 }
 
@@ -78,7 +72,6 @@ void solve(){
         find_front();
         find_back();
     }
-
     cout << final_string();
 }
 

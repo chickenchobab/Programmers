@@ -8,32 +8,32 @@ using namespace std;
 int n;
 
 int ans = 0;
-stack<int> st;
+stack<pair<int, int>> st;
 
 void input(){
     fastio
     cin >> n;
 }
 
-void make_stair(int h){
-    int pop_cnt = 0;
-    while (st.size() && st.top() > h){
-        ans = max(ans, (pop_cnt + 1) * st.top());
+void make_stair(int h, int i){
+    int idx = i;
+    while (st.size() && st.top().first > h){
+        pair<int, int> t = st.top();
+        ans = max(ans, (i - t.second) * t.first);
         st.pop();
-        pop_cnt ++;
+        idx = t.second;
     }
-    if (h == 0) return;
-    while (pop_cnt --) st.push(h);
-    st.push(h);
+    if (h == -1) return;
+    st.push({h, idx});
 }
 
 void solve(){
     int h;
     for (int i = 1; i <= n; i ++){
         cin >> h;
-        make_stair(h);
+        make_stair(h, i);
     }
-    make_stair(0);
+    make_stair(-1, n + 1);
     cout << ans;
 }
 

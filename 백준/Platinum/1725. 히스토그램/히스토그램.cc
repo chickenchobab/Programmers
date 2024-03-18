@@ -7,33 +7,33 @@ using namespace std;
 
 int n;
 
+int ans = 0;
+stack<int> st;
+
 void input(){
     fastio
     cin >> n;
 }
 
-void solve(){
-    int ans = 0, cur;
-    stack<int> st;
-    for (int i = 1; i <= n; i ++){
-        cin >> cur;
-        int pop_cnt = 0;
-        while (st.size() && st.top() > cur){
-            ans = max(ans, (pop_cnt + 1) * st.top());
-            st.pop();
-            pop_cnt ++;
-        }
-        while (pop_cnt --) st.push(cur);
-        st.push(cur);
-    }
-
+void make_stair(int h){
     int pop_cnt = 0;
-    while (st.size()) {
+    while (st.size() && st.top() > h){
         ans = max(ans, (pop_cnt + 1) * st.top());
         st.pop();
         pop_cnt ++;
     }
+    if (h == 0) return;
+    while (pop_cnt --) st.push(h);
+    st.push(h);
+}
 
+void solve(){
+    int h;
+    for (int i = 1; i <= n; i ++){
+        cin >> h;
+        make_stair(h);
+    }
+    make_stair(0);
     cout << ans;
 }
 

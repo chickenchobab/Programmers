@@ -6,8 +6,7 @@
 
 using namespace std;
 
-int n, m;
-int map[51][51];
+int n, m, num;
 
 typedef pair<int, int> p;
 int ans, wall_cnt, virus_cnt;
@@ -21,9 +20,12 @@ void input(){
     cin >> n >> m;
     for (int i = 1; i <= n; i ++ ){
         for (int j = 1; j <= n; j ++){
-            cin >> map[i][j];
-            if (map[i][j] == 1) wall_cnt ++;
-            else if (map[i][j] == 2) spots.push_back({i, j});
+            cin >> num;
+            if (num == 1) {
+                visited[i][j] = 1;
+                wall_cnt ++;
+            }
+            else if (num == 2) spots.push_back({i, j});
         }
     }
     ans = 2500;
@@ -64,7 +66,6 @@ void bfs(){
             int ni = i + di[d];
             int nj = j + dj[d];
             if (ni < 1 || ni > n || nj < 1 || nj > n) continue;
-            if (map[ni][nj] == 1) continue;
             if (visited[ni][nj]) continue;
             q.push({ni, nj});
             visited[ni][nj] = visited[i][j] + 1;

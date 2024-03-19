@@ -31,8 +31,8 @@ void bfs(){
         int cur = q.front();
         q.pop();
         if (cur == k) {
-                cout << cnt[cur] - 1 << '\n';
-                return;
+            cout << cnt[cur] - 1 << '\n';
+            return;
         }
         for (int d = 0; d < 3; d ++){
             int nxt = pos(cur, d);

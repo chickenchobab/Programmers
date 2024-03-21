@@ -22,7 +22,6 @@ void input(){
 void solve(){ 
 
     dp[0][0] = 1, dp[1][0] = 1;
-    //dp[1][2] = !fix[1] && !fix[2];
 
     for (int i = 2; i <= n; i ++){
         if (!fix[i] && !fix[i - 1]) {
@@ -34,19 +33,8 @@ void solve(){
     cout << dp[n][0] + dp[n][1];
 }
 
-void show(){
-    cout << '\n';
-    for (int i = 1; i <= n; i ++){
-        for (int j = 0; j < 3; j ++){
-            cout << dp[i][j] << ' ';
-        }
-        cout << '\n';
-    }
-}
-
 int main(){
     input();
     solve();
-    //show();
     return 0;
 }

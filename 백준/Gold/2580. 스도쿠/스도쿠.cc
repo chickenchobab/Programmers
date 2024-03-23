@@ -9,6 +9,7 @@ int map[9][9];
 
 int n;
 vector<pair<int, int>> blank;
+bool row[9][9], col[9][9], box[9][9];
 
 void input(){
     fastio
@@ -17,29 +18,35 @@ void input(){
         for (int j = 0; j < 9; j ++){
             cin >> num;
             map[i][j] = num;
-            if (num == 0) blank.push_back({i, j});
+            if (!num) blank.push_back({i, j});
+            else {
+                row[i][num - 1] = 1;
+                col[j][num - 1] = 1;
+                box[(i / 3) * 3 + (j / 3)][num - 1] = 1;
+            }
         }
     }
     n = blank.size();
 }
 
 bool check_entry(int i, int j, int num){
-    int x, y, dx, dy;
-    for (x = 0; x < 9; x ++){
-        if (map[i][x] == num) return false;
-    }
-    for (y = 0; y < 9; y ++){
-        if (map[y][j] == num) return false;
-    }
-
-    x = (i / 3) * 3, y = (j / 3) * 3;
-
-    for (int a = 0; a < 3; a ++){
-        for (int b = 0; b < 3; b ++){
-            if (map[x + a][y + b] == num) return false;
-        }
-    }
+    if (row[i][num - 1] || col[j][num - 1] || box[(i / 3) * 3 + (j / 3)][num - 1]) return false;
     return true;
+}
+
+void set_or_reset(int i, int j, int num, bool s){
+    if (s) {
+        map[i][j] = num;
+        row[i][num - 1] = 1;
+        col[j][num - 1] = 1;
+        box[(i / 3) * 3 + (j / 3)][num - 1] = 1;
+    }
+    else {
+        map[i][j] = 0;
+        row[i][num - 1] = 0;
+        col[j][num - 1] = 0;
+        box[(i / 3) * 3 + (j / 3)][num - 1] = 0;
+    }
 }
 
 void show_map(){
@@ -62,9 +69,9 @@ void dfs(int cnt){
     i = blank[cnt].first, j = blank[cnt].second;
     for (int num = 1; num <= 9; num ++){
         if (check_entry(i, j, num)) {
-            map[i][j] = num;
+            set_or_reset(i, j, num, 1);
             dfs(cnt + 1);
-            map[i][j] = 0;
+            set_or_reset(i, j, num, 0);
         }
     }
 }

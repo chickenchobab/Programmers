@@ -1,89 +1,88 @@
 #include <iostream>
 #include <algorithm>
 #include <queue>
-#include <tuple>
 #define fastio ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
 
 using namespace std;
 
-int n, m;
-char map[10][10];
-int visited[10][10][10][10];
-int ox, oy, rx, ry, bx, by;
-
-int di[] = {1, 0, -1, 0}, dj[] = {0, 1, 0, -1};
-queue<tuple<int, int, int, int>> q;
+int n, m, ri, rj, bi, bj;
+char map[11][11];
+bool visited[11][11][11][11];
+int di[] = {1, -1, 0, 0}, dj[] = {0, 0, 1, -1};
+typedef struct NODE{
+    int rx, ry, bx, by, time;
+}node;
+queue<node> q;
 
 void input(){
     fastio
     cin >> n >> m;
-    string str;
-    for (int i = 0; i < n; i ++){
-        cin >> str;
-        for (int j = 0; j < m; j ++){
-            if (str[j] == 'O') ox = i, oy = j;
-            else if (str[j] == 'R') rx = i, ry = j;
-            else if (str[j] == 'B') bx = i, by = j;
-            map[i][j] = str[j]; 
+    char ch;
+    for (int i = 1; i <= n; i ++){
+        for (int j = 1; j <= m; j ++){
+            cin >> ch;
+            if (ch == '\n') cin >> ch;
+            map[i][j] = ch;
+            if (ch == 'R') ri = i, rj = j;
+            else if (ch == 'B') bi = i, bj = j;
         }
     }
 }
 
-void check_and_move(int sri, int srj, int sbi, int sbj, int d){
-    int ri = sri, rj = srj, bi = sbi, bj = sbj;
-    int nri, nrj, nbi, nbj;
-    int flag = 0;
+void move(int rx, int ry, int bx, int by, int d, int time) {
 
-    while (1){
-        nri = ri + di[d], nrj = rj + dj[d];
-        nbi = bi + di[d], nbj = bj + dj[d];
-        if (map[nri][nrj] == '#') nri = ri, nrj = rj;
-        if (map[nbi][nbj] == '#') nbi = bi, nbj = bj;
+    bool rstuck = 0, bstuck = 0;
 
-        if (ri == ox && rj == oy) nri = ri, nrj = rj;
-        if (bi == ox && bj == oy) return; 
+    while (1) {
 
-        bool rstuck = (ri == nri && rj == nrj);
-        bool bstuck = (bi == nbi && bj == nbj);
-        if (rstuck && bstuck) flag = 1;   
-        else if (rstuck && bi == ri - di[d] && bj == rj - dj[d]) {
-            if (ri == ox && rj == oy) return;
-            flag = 1;
+        if (map[rx][ry] == 'O' || map[rx + di[d]][ry + dj[d]] == '#' || (rx + di[d] == bx && ry + dj[d] == by)) rstuck = 1;
+        else {
+            rstuck = 0;
+            rx += di[d]; 
+            ry += dj[d];
         }
-        else if (bstuck && ri == bi - di[d] && rj == bj - dj[d]) flag = 1;
-        
-        if (flag){
-            if (visited[ri][rj][bi][bj]) return;
-            q.push({ri, rj, bi, bj});
-            visited[ri][rj][bi][bj] = visited[sri][srj][sbi][sbj] + 1;
-            // cout << nri << ' ' << nrj << ' ' << nbi << ' ' << nbj  << '\n';
+        if (map[bx + di[d]][by + dj[d]] == '#' || (bx + di[d] == rx && by + dj[d] == ry)) bstuck = 1;
+        else {
+            bstuck = 0;
+            bx += di[d];
+            by += dj[d];
+        }
+
+        if (map[bx + di[d]][by + dj[d]] == 'O' || map[bx][by] == 'O') return;
+
+        if (rstuck && bstuck) {
+            if (visited[rx][ry][bx][by] == 0){
+                //cout << rx << ' ' << ry << ' ' << bx << ' ' << by << ' ' << d << '\n';
+                visited[rx][ry][bx][by] = 1;
+                q.push({rx, ry, bx, by, time + 1});
+            }
             return;
         }
-        
-        ri = nri, rj = nrj, bi = nbi, bj = nbj;
     }
 }
 
-bool bfs(){
+int bfs(){
 
-    q.push({rx, ry, bx, by});
-    visited[rx][ry][bx][by] = 1;
+    int rx, ry, bx, by, time;
+
+    q.push({ri, rj, bi, bj, 0});
+    visited[ri][rj][bi][bj] = 1;
 
     while (q.size()){
-        int ri, rj, bi, bj;
-        tie(ri, rj, bi, bj) = q.front();
+        node f = q.front();
         q.pop();
+        rx = f.rx, ry = f.ry, bx = f.bx, by = f.by, time = f.time;
 
-        if (ri == ox && rj == oy && visited[ri][rj][bi][bj] <= 11) return 1;
+        if (map[rx][ry] == 'O') return 1;
+        if (time == 10) continue;
 
         for (int d = 0; d < 4; d ++){
-            check_and_move(ri, rj, bi, bj, d);
+            move(rx, ry, bx, by, d, time);
         }
     }
-    return 0;
-    
-}
 
+    return 0;
+}
 
 int main(){
     input();

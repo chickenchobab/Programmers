@@ -7,54 +7,38 @@
 using namespace std;
 
 int n, m, ans;
-int map[51][51];
-int di[] = {1, -1, 0, 0}, dj[] = {0, 0, 1, -1};
-vector<pair<int, int>> pos;
-typedef struct NODE{
-    int i, j, dist;
-}node;
+//int map[51][51];
+//int di[] = {1, -1, 0, 0}, dj[] = {0, 0, 1, -1};
+vector<pair<int, int>> house, store, selected_store;
 
 void input(){
     fastio
     cin >> n >> m;
+    int num;
     for (int i = 1; i <= n; i ++){
         for (int j = 1; j <= n; j ++){
-            cin >> map[i][j];
-            if (map[i][j] == 2) pos.push_back({i, j});
+            cin >> num;
+            if (num == 1) house.push_back({i, j});
+            else if (num == 2) store.push_back({i, j});
         }
     }
     ans = 50 * 50 * 13;
 }
 
-int bfs(){
-    queue<node> q;
-    bool visited[n + 1][n + 1] = {0,};
-    int i, j, dist, sum = 0;
+int check_distance(){
+    
+    int sum = 0;
 
-    for (int i = 1; i <= n; i ++){
-        for (int j = 1; j <= n; j ++){
-            if (map[i][j] == 3) {
-                q.push({i, j, 0});
-                visited[i][j] = 1;
-            }
+    for (int h = 0; h < house.size(); h ++){
+        int hi = house[h].first;
+        int hj = house[h].second;
+        int dist = 50 * 50 * 13;
+        for (int s = 0; s < m; s ++){
+            int si = selected_store[s].first;
+            int sj = selected_store[s].second;
+            dist = min(dist, abs(hi - si) + abs(hj - sj));
         }
-    }
-
-    while (q.size()){
-        node f = q.front();
-        i = f.i, j = f.j, dist = f.dist;
-        q.pop();
-
-        if (map[i][j] == 1) sum += dist;
-
-        for (int d = 0; d < 4; d ++){
-            int ni = i + di[d];
-            int nj = j + dj[d];
-            if (ni < 1 || ni > n || nj < 1 || nj > n) continue;
-            if (visited[ni][nj]) continue;
-            visited[ni][nj] = 1;
-            q.push({ni, nj, dist + 1});
-        }
+        sum += dist;
     }
     
     return sum;
@@ -63,23 +47,27 @@ int bfs(){
 void select(int cur, int cnt){
     
     if (cnt == m) {
-        ans = min(ans, bfs());
+        ans = min(ans, check_distance());
         return;
     }
 
-    for (int nxt = cur + 1; nxt < pos.size(); nxt ++)
-    {   map[pos[nxt].first][pos[nxt].second] = 3;
+    for (int nxt = cur + 1; nxt < store.size(); nxt ++){   
+        int i = store[nxt].first;
+        int j = store[nxt].second;
+        selected_store.push_back({i, j});
         select(nxt, cnt + 1);
-        map[pos[nxt].first][pos[nxt].second] = 2;
+        selected_store.pop_back();
     }
 }
 
 int main(){
     input();
-    for (int cur = 0; cur < pos.size(); cur ++){
-        map[pos[cur].first][pos[cur].second] = 3;
+    for (int cur = 0; cur < store.size(); cur ++){
+        int i = store[cur].first;
+        int j = store[cur].second;
+        selected_store.push_back({i, j});
         select(cur, 1);
-        map[pos[cur].first][pos[cur].second] = 2;
+        selected_store.pop_back();
     }
     cout << ans;
     return 0;

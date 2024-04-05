@@ -15,22 +15,25 @@ void input(){
     cin >> n;
 }
 
-void make_dragon_curve(int i, int j, int cnt){
-    if (cnt == -1) return;
-
-    int stride = direction.size();
-    int ni = i, nj = j;
-
-    for (int s = stride / 2; s < stride; s ++){
-        ni = ni + di[direction[s]];
-        nj = nj + dj[direction[s]];
-        visited[ni][nj] = 1;
+void calculate_direction(int d, int g){
+    direction.push_back(d);
+    
+    for (int i = 0; i < g; i ++){
+        for (int j = direction.size(); j > 0; j --){
+            int rd = (direction[j - 1] + 1) % 4;
+            direction.push_back(rd);
+        }
     }
-    for (int s = stride; s > 0; s --){
-        direction.push_back((direction[s - 1] + 1) % 4);
-    }
+}
 
-    make_dragon_curve(ni, nj, cnt - 1);
+void dfs(int i, int j){
+    visited[i][j] = 1;
+    int s = direction.size();
+    for (int d : direction){
+        i += di[d];
+        j += dj[d];
+        visited[i][j] = 1;
+    }
 }
 
 int count_rectangle(){
@@ -48,9 +51,8 @@ void solve(){
 
     while (n --){
         cin >> j >> i >> d >> g;
-        visited[i][j] = 1;
-        direction.push_back(d);
-        make_dragon_curve(i, j, g);
+        calculate_direction(d, g);
+        dfs(i, j);
         direction.clear();
     }
     

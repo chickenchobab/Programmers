@@ -1,37 +1,42 @@
 #include <iostream>
-#include <deque>
+#include <algorithm>
 #include <string>
+#include <stack>
+#define fastio ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
 
 using namespace std;
 
-string str, bomb;
-deque<char> dq;
+string instr, outstr, bomb;
 
 void input(){
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-    cin >> str >> bomb;
+    fastio
+    cin >> instr >> bomb;
+}
+
+void solve(){
+    int len = bomb.length();
+
+    int i, j;
+    for (i = 0; i < instr.length(); i ++){
+        outstr.push_back(instr[i]);
+
+        if (outstr.back() == bomb.back() && outstr.length() >= len){
+            for (j = 0; j < len; j ++){
+                if (outstr[outstr.length() - 1 - j] != bomb[len - 1 - j]) break;
+            }
+            if (j != len) continue;
+            for (j = 0; j < len; j ++){
+                outstr.pop_back();
+            }
+        }
+    }
+
+    if (outstr.length()) cout << outstr;
+    else cout << "FRULA";
 }
 
 int main(){
-    input();  
-    int i, j, len = bomb.length();
-    for (i = 0; i < str.size(); i ++) {
-        dq.push_back(str[i]);
-        if (dq.back() != bomb[len - 1]) continue;
-        for (j = 0; j < len && j < dq.size(); j ++) 
-            if (dq[dq.size() - 1 - j] != bomb[len - 1 - j]) break;
-        if (j != len) continue;
-        for (j = 0; j < len; j ++) 
-            dq.pop_back();
-    }
-
-    if (dq.size())
-        for (char tmp : dq) cout << tmp;
-    else 
-        cout << "FRULA";
-    
-    
-    
+    input();
+    solve();
+    return 0;
 }

@@ -30,18 +30,7 @@ void input(){
     }
 }
 
-void show_map(){
-    cout << '\n';
-    cout << lev << '\n';
-    for (int i = 1; i <= n; i ++){
-        for (int j = 1; j <= n; j ++){
-            cout << map[i][j] << ' ';
-        }
-        cout << '\n';
-    }
-}
-
-bool find_fish(){
+bool hunt(){
 
     int i, j, ni, nj, dist;
     int s = 0;
@@ -82,24 +71,24 @@ bool find_fish(){
     sort(fishes.begin(), fishes.end());
 
     if (fishes.empty()) return false;
+
     p point = fishes.front();
     x = point.first, y = point.second;
-    time += s;
-    cnt ++;
     map[x][y] = 0;
+
+    time += s;
+    if (++ cnt == lev){
+        lev ++;
+        cnt = 0;
+    }
+    
     return true;
 }
 
 
 void solve(){
     lev = 2;
-    while (find_fish()) {
-        if (lev == cnt){
-            lev ++;
-            cnt = 0;
-        }
-        // show_map();
-    }
+    while (hunt());
     cout << time;
 }
 

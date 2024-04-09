@@ -13,6 +13,7 @@ int x, y, time, lev, cnt;
 typedef struct NODE{
     int dist, i, j;
 }node;
+typedef pair<int, int> p;
 
 void input(){
     fastio
@@ -29,14 +30,6 @@ void input(){
     }
 }
 
-bool cmp(node a, node b){
-    if (a.dist == b.dist){
-        if (a.i == b.i) return a.j < b.j;
-        return a.i < b.i;
-    }
-    return a.dist < b.dist;
-}
-
 void show_map(){
     cout << '\n';
     cout << lev << '\n';
@@ -51,11 +44,12 @@ void show_map(){
 bool find_fish(){
 
     int i, j, ni, nj, dist;
+    int s = 0;
     // int min_dist = MAX * MAX, min_i = MAX, min_j = MAX;
 
-    bool visited[n + 1][n + 1] = {0,};
+    int visited[n + 1][n + 1] = {0,};
     queue<node> q;
-    vector<node> fishes;
+    vector<pair<int, int>> fishes;
 
     visited[x][y] = 1;
     q.push({0, x, y});
@@ -65,9 +59,7 @@ bool find_fish(){
         q.pop();
         i = f.i, j = f.j, dist = f.dist;
 
-        if (map[i][j] > 0 && map[i][j] < lev) {
-            fishes.push_back({dist, i, j});
-        }
+        if (s && dist == s) break;
 
         for (int dir = 0; dir < 4; dir ++){
             ni = i + di[dir];
@@ -75,17 +67,24 @@ bool find_fish(){
             if (ni < 1 || ni > n || nj < 1 || nj > n) continue;
             if (visited[ni][nj]) continue;
             if (map[ni][nj] > lev) continue;
+
             visited[ni][nj] = 1;
-            q.push({dist + 1, ni, nj});
+            if (map[ni][nj] > 0 && map[ni][nj] < lev){
+                s = dist + 1;
+                fishes.push_back({ni, nj});
+            }
+            else {
+                q.push({dist + 1, ni, nj});
+            }
         }
     }
 
-    sort(fishes.begin(), fishes.end(), cmp);
+    sort(fishes.begin(), fishes.end());
 
     if (fishes.empty()) return false;
-    node f = fishes.front();
-    x = f.i, y = f.j;
-    time += f.dist;
+    p point = fishes.front();
+    x = point.first, y = point.second;
+    time += s;
     cnt ++;
     map[x][y] = 0;
     return true;

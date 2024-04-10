@@ -26,16 +26,6 @@ void input(){
     }
 }
 
-void show(){
-    cout << '\n';
-    for (int i = 1; i <= n; i ++){
-        for (int j = 1; j <= m; j ++){
-            cout << watched[i][j] << ' ';
-        }
-        cout << '\n';
-    }
-}
-
 void watch(int i, int j, int dir){
     dir = dir % 4;
     while (1){
@@ -70,6 +60,8 @@ void calculate(){
     ans = min(ans, sum - wall);
 }
 
+// consider a step watching dir by dir
+
 void check_the_rotation(int cur){
     int i, j;
 
@@ -81,8 +73,8 @@ void check_the_rotation(int cur){
 
     for (int dir = 0; dir < 4; dir ++){
         
-        direction[cur + 1] = dir;    // rotate
-        check_the_rotation(cur + 1); // check
+        direction[cur + 1] = dir;   
+        check_the_rotation(cur + 1); 
     }
 }
 

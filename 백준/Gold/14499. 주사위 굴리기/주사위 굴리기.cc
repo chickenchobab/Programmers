@@ -4,7 +4,7 @@
 using namespace std;
 
 // sum of the opposite side is 6
-int n, m, x, y, k;
+int n, m, x, y, nx, ny, k;
 int map[20][20];
 int di[] = {0, 0, 0, -1, 1}, dj[] = {0, 1, -1, 0, 0};
 int dice[7];
@@ -21,30 +21,28 @@ void input(){
 
 void roll_the_dice(int dir){
     int tmp = dice[1];
+    x = nx;
+    y = ny;
     switch(dir){
         case 1:
-            y ++;
             dice[1] = dice[4];
             dice[4] = dice[6];
             dice[6] = dice[3];
             dice[3] = tmp;
             break;
         case 2:
-            y --;
             dice[1] = dice[3];
             dice[3] = dice[6];
             dice[6] = dice[4];
             dice[4] = tmp;
             break;
         case 3:
-            x --;
             dice[1] = dice[5];
             dice[5] = dice[6];
             dice[6] = dice[2];
             dice[2] = tmp;
             break;
         case 4:
-            x ++;
             dice[1] = dice[2];
             dice[2] = dice[6];
             dice[6] = dice[5];
@@ -54,8 +52,8 @@ void roll_the_dice(int dir){
 
 void solve(){
 
-    int dir, nx, ny;
-    
+    int dir;
+
     while (k --){
         cin >> dir;
         nx = x + di[dir];

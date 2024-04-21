@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int n, m, k;
+int n, m, k, x, y, z;
 int nut[11][11], map[11][11];
 deque<int> tree[11][11];
 int di[] = {-1, -1, -1, 0, 0, 1, 1, 1}, dj[] = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -20,10 +20,15 @@ void input(){
             map[i][j] = 5;
         }
     }
-    int x, y, z;
     for (int i = 1; i <= m; ++ i){
         cin >> x >> y >> z;
         tree[x][y].push_back(z);
+    }
+    for (int i = 1; i <= n; ++ i){
+        for (int j = 1; j <= n; ++ j){
+            if (tree[i][j].empty()) continue;
+            sort(tree[i][j].begin(), tree[i][j].end());
+        }
     }
 }
 
@@ -34,8 +39,6 @@ void spring_summer(){
             if ((s = tree[i][j].size()) == 0) continue;
 
             dead = 0;
-            sort(tree[i][j].begin(), tree[i][j].end());
-    
             while (s --){
                 if(tree[i][j].front() <= map[i][j]){
                     map[i][j] -= tree[i][j].front();
@@ -46,7 +49,6 @@ void spring_summer(){
                 }
                 tree[i][j].pop_front();
             }
-
             map[i][j] += dead;
         }
     }
@@ -64,7 +66,7 @@ void fall_winter(){
                     int ni = i + di[d];
                     int nj = j + dj[d];
                     if (ni < 1 || ni > n || nj < 1 || nj > n) continue;
-                    tree[ni][nj].push_back(1);
+                    tree[ni][nj].push_front(1);
                 }
             }
         }

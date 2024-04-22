@@ -5,39 +5,38 @@
 using namespace std;
 
 stack<char> st;
-string pro, ans;
+string str;
 
 void input(){
     fastio
-    cin >> pro;
-}
-
-int get_lev(char op){
-    if (op == ')') return 0;
-    if (op == '+' || op == '-') return 1;
-    if (op == '*' || op == '/') return 2;
-    if (op == '(') return 3;
+    cin >> str;
 }
 
 void solve(){
     char ch;
-    int len = pro.length();
+    int len = str.length();
 
     for(int i = 0; i < len; i ++){
-        ch = pro[i];
+        ch = str[i];
 
-        if (isalpha(ch)) ans += ch;
+        if (isalpha(ch)) cout << ch;
         else if (ch == ')'){
             while (st.size() && st.top() != '('){
-                ans += st.top();
+                cout << st.top();
                 st.pop();
             }
             st.pop();
         }
-        else if (st.size() && get_lev(st.top()) >= get_lev(ch)){
-            while (st.size() && get_lev(st.top()) >= get_lev(ch)){
-                if (st.top() == '(') break;
-                ans += st.top();
+        else if (ch == '*' || ch == '/'){
+            while (st.size() && st.top() != '(' && st.top() != '+' && st.top() != '-'){
+                cout << st.top();
+                st.pop();
+            }
+            st.push(ch);
+        }
+        else if (ch == '+' || ch == '-') {
+            while (st.size() && st.top() != '('){
+                cout << st.top();
                 st.pop();
             }
             st.push(ch);
@@ -48,11 +47,9 @@ void solve(){
     }
 
     while (st.size()){
-        ans += st.top();
+        cout << st.top();
         st.pop();
     }
-
-    cout << ans;
 }
 
 int main(){

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#define INF 10000
 #define fastio ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
 
 using namespace std;
@@ -13,7 +14,7 @@ void input(){
     cin >> n >> m;
     for (int i = 1; i <= n; i ++){
         for (int j = 1; j <= n; j ++){
-            graph[i][j] = 10000000;
+            graph[i][j] = INF;
         }
     }
     int a, b;
@@ -23,22 +24,12 @@ void input(){
     }
 }
 
-void show(){
-    for (int i = 1; i <= n; i ++){
-        for (int j = 1; j <= n; j ++){
-            cout << graph[i][j] << ' ';
-        }
-        cout << '\n';
-    }
-}
-
 void floyd_warshall(){  
     for (int s = 1; s <= n; s ++){
         for (int i = 1; i <= n; i ++){
             for (int j = 1; j <= n; j ++){
                 if (i == s || j == s) continue;
                 graph[i][j] = min(graph[i][j], graph[i][s] + graph[s][j]);
-                // graph[j][i] = graph[i][j];
             }
         }
     }
@@ -46,10 +37,9 @@ void floyd_warshall(){
 
 void solve(){
     int wincnt, winnum;
-    wincnt = 10000000;
+    wincnt = INF;
 
     floyd_warshall();
-    // show();
 
     for (int i = 1; i <= n; i ++){
         int cnt = 0;
@@ -57,7 +47,6 @@ void solve(){
             if (i == j) continue;
             cnt += graph[i][j];
         }
-        // cout << cnt << ' ';
         if (cnt < wincnt){
             wincnt = cnt;
             winnum = i;

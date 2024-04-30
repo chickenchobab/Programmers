@@ -6,31 +6,43 @@
 using namespace std;
 int T;
 typedef pair<int, int> p;
-
+priority_queue<p> maxq; 
+priority_queue<p, vector<p>, greater<p>> minq;
+bool popped[1000001];
 
 void input(){
     fastio
     cin >> T;
 }
 
+void update(bool reset){
+    if (reset){
+        while (maxq.size()) maxq.pop();
+        while (minq.size()) minq.pop();
+        return;
+    }
+    while (maxq.size() && popped[maxq.top().second]) 
+        maxq.pop();
+    while (minq.size() && popped[minq.top().second])
+        minq.pop();
+}
+
 void solve(){
     int k; char c; int n;
     
     while (T --){
-        priority_queue<p> maxq; 
-        priority_queue<p, vector<p>, greater<p>> minq;
-        bool popped[1000001] = {0,};
+        int idx = 0;
         cin >> k;
 
-        int idx = 0;
         while (k --){
             cin >> c >> n;
-            if (c == 'I'){   // insert a number
+            if (c == 'I'){ // insert a number
                 idx ++;
                 maxq.push({n, idx});
                 minq.push({n, idx});
+                popped[idx] = 0;
             }
-            else {           // delete a number
+            else {         // delete a number
                 if (n == 1) {
                     if (maxq.empty()) continue;
                     popped[maxq.top().second] = 1;
@@ -42,12 +54,12 @@ void solve(){
                     minq.pop();
                 }
             }
-            while (maxq.size() && popped[maxq.top().second]) maxq.pop();
-            while (minq.size() && popped[minq.top().second]) minq.pop();
+            update(0);
         }
-        
+    
         if (maxq.size()) cout << maxq.top().first << ' ' << minq.top().first << '\n';
         else cout << "EMPTY\n";
+        update(1);
     }
 }
 

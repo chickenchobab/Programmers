@@ -6,8 +6,7 @@
 using namespace std;
 
 int n;
-
-int ans = 0;
+int ans;
 stack<pair<int, int>> st;
 
 void input(){
@@ -15,25 +14,23 @@ void input(){
     cin >> n;
 }
 
-void make_stair(int h, int i){
-    int idx = i;
-    while (st.size() && st.top().first > h){
-        pair<int, int> t = st.top();
-        ans = max(ans, (i - t.second) * t.first);
+void make_stair(int h){
+    int cnt = 0;
+    while (st.size() && st.top().first >= h){
+        cnt += st.top().second;
+        ans = max(ans, st.top().first * cnt);
         st.pop();
-        idx = t.second;
     }
-    if (h == -1) return;
-    st.push({h, idx});
+    if (h) st.push({h, cnt + 1});
 }
 
 void solve(){
     int h;
     for (int i = 1; i <= n; i ++){
         cin >> h;
-        make_stair(h, i);
+        make_stair(h);
     }
-    make_stair(-1, n + 1);
+    make_stair(0);
     cout << ans;
 }
 

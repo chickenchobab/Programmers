@@ -20,18 +20,7 @@ void input(){
     loopi {
         loopj {
             cin >> state[i][j];
-            //ans = max(ans, state[i][j]);
         }
-    }
-}
-
-void show(){
-    cout << '\n';
-    loopi {
-        loopj {
-            cout << state[i][j] << ' ';
-        }
-        cout << '\n';
     }
 }
 
@@ -114,7 +103,6 @@ void four_dir_check(int cnt){
 
     for (int dir = 0; dir < 4; dir ++){ 
         move(dir);
-        //show();
         four_dir_check(cnt + 1);
         copy_state(state_copied, state);
     }

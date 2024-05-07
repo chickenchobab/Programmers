@@ -28,35 +28,38 @@ void input(){
 
 void reset(){
     score = 0;
-    for (int e = 0; e < siz; ++ e) 
+    for (int e = 0; e < siz; ++ e) {
+        // revive every enemy
         squad[e].status = 1;
+    }
 }
 
 void kill(int row, int col){
     int dist = N + M, idx = -1;
 
     for (int e = 0; e < siz; ++ e){
-        if (squad[e].status == 0) continue; // allow kill already killed(-1)
+        if (squad[e].status == 0) continue;
         int d = abs(squad[e].r - row) + abs(squad[e].c - col);
         if (d > D) continue;
 
-        if (dist > d){ // find the closest enemy
+        if (dist > d){
             dist = d;
             idx = e;
         }
     }
     
     if (idx != -1 && squad[idx].status == 1){
-        score ++; // score increases if newly killed(1)
+        // score increases if newly killed(1)
+        score ++; 
         squad[idx].status = -1;
     }
 }
 
 void check(int row){
     for (int e = 0; e < siz; ++ e){
-        // change the status of who newly died or entered
-        if (squad[e].status == -1 || squad[e].r + 1 == row) squad[e].status = 0;
-        if (squad[e].status == 0) continue;
+        // change status of newly dead or finally alived
+        if (squad[e].status == -1 || squad[e].r + 1 == row) 
+            squad[e].status = 0; 
     }
 }
 

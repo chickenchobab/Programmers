@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int N, M, D;
+int N, M, D, siz;
 typedef struct ENEMY{
     int r, c, status;
 }enemy;
@@ -23,10 +23,11 @@ void input(){
             if (num) base.push_back({i, j, 1});
         }
     }
+    siz = base.size();
 }
 
 void reset(){
-    for (int e = 0; e < base.size(); ++ e)
+    for (int e = 0; e < siz; ++ e)
         squad[e] = base[e];
     score = finished = 0;
 }
@@ -36,7 +37,7 @@ void kill(int a){
 
     int dist = N + M, idx = -1, active = 0;
 
-    for (int e = 0; e < squad.size(); ++ e){
+    for (int e = 0; e < siz; ++ e){
         if (squad[e].status == 0) continue; // allow kill already killed(-1)
         active ++;
         int d = abs(squad[e].r - (N + 1)) + abs(squad[e].c - a);
@@ -58,7 +59,7 @@ void move(){
     if (finished) return;
 
     int active = 0;
-    for (int e = 0; e < squad.size(); ++ e){
+    for (int e = 0; e < siz; ++ e){
         if (squad[e].status == -1) squad[e].status = 0;
         if (squad[e].status == 0) continue;
         
@@ -72,7 +73,7 @@ void move(){
 void show(){
     bool map[N + 1][M + 1] = {0,};
 
-    for (int e = 0; e < squad.size(); ++ e){
+    for (int e = 0; e < siz; ++ e){
         if (squad[e].status == 0) continue;
         int r = squad[e].r;
         int c = squad[e].c;

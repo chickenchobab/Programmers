@@ -9,8 +9,8 @@ int N, M, D, siz;
 typedef struct ENEMY{
     int r, c, status;
 }enemy;
-vector<enemy> squad, base;
-int archer[3];
+vector<enemy> squad;
+int arcpos[3];
 int ans, score;
 
 void input(){
@@ -20,16 +20,16 @@ void input(){
     for (int i = 1; i <= N; ++ i){
         for (int j = 1; j <= M; ++ j){
             cin >> num;
-            if (num) base.push_back({i, j, 1});
+            if (num) squad.push_back({i, j, 1});
         }
     }
-    siz = base.size();
+    siz = squad.size();
 }
 
 void reset(){
     score = 0;
     for (int e = 0; e < siz; ++ e) 
-        squad[e] = base[e];
+        squad[e].status = 1;
 }
 
 void kill(int row, int col){
@@ -54,38 +54,16 @@ void kill(int row, int col){
 
 void check(int row){
     for (int e = 0; e < siz; ++ e){
+        // change the status of who newly died or entered
         if (squad[e].status == -1 || squad[e].r + 1 == row) squad[e].status = 0;
         if (squad[e].status == 0) continue;
     }
 }
 
-void show(){
-    bool map[N + 1][M + 1] = {0,};
-
-    for (int e = 0; e < siz; ++ e){
-        if (squad[e].status == 0) continue;
-        int r = squad[e].r;
-        int c = squad[e].c;
-        map[r][c] = 1;
-    }
-
-    for (int i = 1; i <= N; ++ i){
-        for (int j = 1; j <= M; ++ j){
-            cout << map[i][j] << ' ';
-        }
-        cout << '\n';
-    }
-    cout << "score = " << score << "\n";
-    for (int i = 0; i < 3; i ++){
-        cout << archer[i] << ' ';
-    }
-    cout << "\n\n";
-}
-
 void fight(){
     for (int row = N + 1; row > 0; row --){
         for (int a = 0; a < 3; a ++){
-            kill(row, archer[a]);
+            kill(row, arcpos[a]);
         }
         check(row);
         // show();
@@ -100,9 +78,9 @@ void dispose(int cur, int cnt){
         return;
     }
     for (int nxt = cur + 1; nxt <= M; ++ nxt){
-        archer[cnt] = nxt;
+        arcpos[cnt] = nxt;
         dispose(nxt, cnt + 1);
-        // archer[cnt] = 0;
+        // arcpos[cnt] = 0;
     }
 }
 
@@ -112,14 +90,12 @@ bool cmp(enemy a, enemy b){
 }
 
 void solve(){
-    sort(base.begin(), base.end(), cmp);
-    for (enemy e : base) 
-        squad.push_back(e);
+    sort(squad.begin(), squad.end(), cmp);
 
     for (int st = 1; st <= M - 2; ++ st){
-        archer[0] = st;
+        arcpos[0] = st;
         dispose(st, 1);
-        // archer[0] = 0;
+        // arcpos[0] = 0;
     }
     cout << ans;
 }

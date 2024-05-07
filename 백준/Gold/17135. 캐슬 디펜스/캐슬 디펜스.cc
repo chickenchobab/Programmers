@@ -32,7 +32,7 @@ void reset(){
     score = finished = 0;
 }
 
-void kill(int a){
+void kill(int row, int col){
     if (finished) return;
 
     int dist = N + M, idx = -1, active = 0;
@@ -40,7 +40,7 @@ void kill(int a){
     for (int e = 0; e < siz; ++ e){
         if (squad[e].status == 0) continue; // allow kill already killed(-1)
         active ++;
-        int d = abs(squad[e].r - (N + 1)) + abs(squad[e].c - a);
+        int d = abs(squad[e].r - row) + abs(squad[e].c - col);
         if (d > D) continue;
 
         if (dist > d){ // find the closest enemy
@@ -55,17 +55,15 @@ void kill(int a){
     }
 }
 
-void move(){
+void check(int row){
     if (finished) return;
 
     int active = 0;
     for (int e = 0; e < siz; ++ e){
-        if (squad[e].status == -1) squad[e].status = 0;
+        if (squad[e].status == -1 || squad[e].r + 1 == row) squad[e].status = 0;
         if (squad[e].status == 0) continue;
         
-        squad[e].r = squad[e].r + 1;
-        if (squad[e].r == N + 1) squad[e].status = 0;
-        else active ++;
+        active ++;
     }
     if (active == 0) finished = 1;
 }
@@ -94,11 +92,11 @@ void show(){
 }
 
 void fight(){
-    while (finished == 0){
+    for (int row = N + 1; row > 0; row --){
         for (int a = 0; a < 3; a ++){
-            kill(archer[a]);
+            kill(row, archer[a]);
         }
-        move();
+        check(row);
         // show();
     }
     ans = max(ans, score);

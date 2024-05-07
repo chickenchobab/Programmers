@@ -10,13 +10,8 @@ typedef struct ENEMY{
     int r, c, status;
 }enemy;
 vector<enemy> squad, base;
-bool archer[16];
+int archer[3];
 int ans, score, finished;
-
-bool cmp(enemy a, enemy b){
-    if (a.c == b.c) return a.r > b.r;
-    return a.c < b.c;
-}
 
 void input(){
     fastio
@@ -91,7 +86,7 @@ void show(){
         cout << '\n';
     }
     cout << "score = " << score << "\n";
-    for (int i = 1; i <= M; i ++){
+    for (int i = 0; i < 3; i ++){
         cout << archer[i] << ' ';
     }
     cout << "\n\n";
@@ -99,9 +94,8 @@ void show(){
 
 void fight(){
     while (finished == 0){
-        for (int a = 1; a <= M; a ++){
-            if (archer[a] == 0) continue;
-            kill(a);
+        for (int a = 0; a < 3; a ++){
+            kill(archer[a]);
         }
         move();
         // show();
@@ -116,10 +110,15 @@ void dispose(int cur, int cnt){
         return;
     }
     for (int nxt = cur + 1; nxt <= M; ++ nxt){
-        archer[nxt] = 1;
+        archer[cnt] = nxt;
         dispose(nxt, cnt + 1);
-        archer[nxt] = 0;
+        // archer[cnt] = 0;
     }
+}
+
+bool cmp(enemy a, enemy b){
+    if (a.c == b.c) return a.r > b.r;
+    return a.c < b.c;
 }
 
 void solve(){
@@ -128,9 +127,9 @@ void solve(){
         squad.push_back(e);
 
     for (int st = 1; st <= M - 2; ++ st){
-        archer[st] = 1;
+        archer[0] = st;
         dispose(st, 1);
-        archer[st] = 0;
+        // archer[0] = 0;
     }
     cout << ans;
 }

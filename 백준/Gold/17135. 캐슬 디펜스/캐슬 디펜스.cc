@@ -11,7 +11,7 @@ typedef struct ENEMY{
 }enemy;
 vector<enemy> squad, base;
 int archer[3];
-int ans, score, finished;
+int ans, score;
 
 void input(){
     fastio
@@ -27,19 +27,16 @@ void input(){
 }
 
 void reset(){
-    for (int e = 0; e < siz; ++ e)
+    score = 0;
+    for (int e = 0; e < siz; ++ e) 
         squad[e] = base[e];
-    score = finished = 0;
 }
 
 void kill(int row, int col){
-    if (finished) return;
-
-    int dist = N + M, idx = -1, active = 0;
+    int dist = N + M, idx = -1;
 
     for (int e = 0; e < siz; ++ e){
         if (squad[e].status == 0) continue; // allow kill already killed(-1)
-        active ++;
         int d = abs(squad[e].r - row) + abs(squad[e].c - col);
         if (d > D) continue;
 
@@ -48,24 +45,18 @@ void kill(int row, int col){
             idx = e;
         }
     }
-    if (active == 0) finished = 1;
-    else if (idx != -1 && squad[idx].status == 1){
+    
+    if (idx != -1 && squad[idx].status == 1){
         score ++; // score increases if newly killed(1)
         squad[idx].status = -1;
     }
 }
 
 void check(int row){
-    if (finished) return;
-
-    int active = 0;
     for (int e = 0; e < siz; ++ e){
         if (squad[e].status == -1 || squad[e].r + 1 == row) squad[e].status = 0;
         if (squad[e].status == 0) continue;
-        
-        active ++;
     }
-    if (active == 0) finished = 1;
 }
 
 void show(){

@@ -7,7 +7,6 @@ using namespace std;
 
 int N, M, K;
 int A[202];
-// bool here[202];
 deque<int> robots;
 int up, down, time;
 
@@ -20,18 +19,7 @@ void input(){
     }
 }
 
-void show(){
-    for (int i = 0; i < N; ++ i){
-        cout << A[(up + i) % M] << ' ';
-    }
-    cout << '\n';
-    for (int i = 1; i <= N; ++ i){
-        cout << A[(down + i) % M] << ' ';
-    }
-    cout << '\n';
-    cout << '\n';
-}
-
+// it is faster to implement like real belt.
 void rotate(){
     up = (up + M - 1) % M;
     down = (down + M - 1) % M;
@@ -75,14 +63,8 @@ void solve(){
     up = 0, down = N - 1;
     while (K > 0){
         rotate();
-        // cout << "after rotate\n";
-        // show();
         move_robot();
-        // cout << "after move robot\n";
-        // show();
         put_robot();
-        // cout << "after put robot\n";
-        // show();
         time ++;
     }
     cout << time;

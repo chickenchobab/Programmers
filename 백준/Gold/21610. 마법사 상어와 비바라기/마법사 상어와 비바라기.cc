@@ -22,15 +22,10 @@ void input(){
 }
 
 void move_and_rain(int d, int s){
-    int cnt = clouds.size();
+    int i, j, cnt = clouds.size();
     for (int c = 0; c < cnt; ++ c){
-        int spd = s;
-        while (spd --){
-            clouds[c].first = (clouds[c].first + di[d] + N) % N;
-            clouds[c].second = (clouds[c].second + dj[d] + N) % N;
-        }
-        int i = clouds[c].first;
-        int j = clouds[c].second;
+        i = clouds[c].first = (clouds[c].first + s * di[d] + N) % N;
+        j = clouds[c].second = (clouds[c].second + s * dj[d] + N) % N;
         water[i][j] ++;
         check[i][j] = 1;   
     }
@@ -76,6 +71,7 @@ void solve(){
     while (M --){
         cin >> d >> s;
         d --;
+        s = s % N;
         move_and_rain(d, s);
         irrigate();
         evaporate();

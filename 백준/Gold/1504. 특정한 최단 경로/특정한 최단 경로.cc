@@ -1,63 +1,79 @@
 #include <iostream>
-#include <vector>
+#include <algorithm>
 #include <queue>
+#include <vector>
+#define fastio ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
 #define MAX 200000000
-
 using namespace std;
+int N, E;
+typedef struct EDGE{
+  int wgh, nod;
+}edge;
+struct cmp{
+  bool operator()(edge &a, edge &b){
+    return a.wgh > b.wgh;
+  }
+};
+priority_queue<edge, vector<edge>, cmp> pq;
+vector<edge> edges[808];
+int u, v;
+int dus, due, duv, dvs, dve; // s = 1, e = n
 
-int n,e,a,b,c,x,y,ans;
-typedef pair<int,int> p;
-vector<p> g[808];
+void input(){
+  fastio
+  cin >> N >> E;
+  int a, b, c;
+  for (int i = 1; i <= E; ++ i){
+    cin >> a >> b >> c;
+    edges[a].push_back({c, b});
+    edges[b].push_back({c, a});
+  }
+  cin >> u >> v;
+}
 
+void dijkstra(int s){
+  int dst[N + 1];
 
-int dijkstra(int start, int end){
-    priority_queue<p, vector<p>, greater<p>> pq;
-    int d[808];
+  for (int i = 1; i <= N; ++ i) dst[i] = MAX;
+  dst[s] = 0;
+  pq.push({0, s});
 
-    for(int i=1;i<=n;i++){
-        d[i]=MAX;
-    }d[start]=0;
+  while (pq.size()){
+    int cur = pq.top().nod;
+    int wgh = pq.top().wgh;
+    pq.pop();
 
-    pq.push({0, start});
+    if (dst[cur] < wgh) continue;
 
-    while(pq.size()){
-        p u = pq.top();
-        pq.pop();
-
-        if(d[u.second]<u.first) continue;
-
-        for(p v:g[u.second]){
-            int uv=v.first;
-            if(d[v.second]>uv+d[u.second]) {
-                d[v.second]=uv+d[u.second];
-                pq.push({d[v.second], v.second});
-            }
-        }
+    for (auto tmp : edges[cur]){
+      int nxt = tmp.nod;
+      int wgh = tmp.wgh;
+      if (dst[nxt] > dst[cur] + wgh){
+        dst[nxt] = dst[cur] + wgh;
+        pq.push({dst[nxt], nxt});
+      }
     }
-    return d[end];
+  }
+
+  if (s == u) {
+    dus = dst[1]; due = dst[N]; duv = dst[v];
+  }
+  else if (s == v){
+    dvs = dst[1], dve = dst[N];
+  }
+}
+
+void solve(){
+  int ans;
+  dijkstra(u);
+  dijkstra(v);
+  ans = min(dus + duv + dve, dvs + duv + due);
+  if (ans >= MAX) ans = -1;
+  cout << ans;
 }
 
 int main(){
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-
-    cin>>n>>e;
-
-    for(int i=1;i<=e;i++){
-        cin>>a>>b>>c;
-        g[a].push_back({c,b});
-        g[b].push_back({c,a});
-    }
-
-    cin>>x>>y;
-
-    //dijkstra(0,1); dijkstra(1,x); dijkstra(2,y);
-    ans=MAX;
-    ans=min(ans,dijkstra(1,x)+dijkstra(x,y)+dijkstra(y,n));
-    ans=min(ans,dijkstra(1,y)+dijkstra(y,x)+dijkstra(x,n));
-    
-
-    cout<<((ans<MAX)? ans:-1);
-    
-    
+  input();
+  solve();
+  return 0;
 }

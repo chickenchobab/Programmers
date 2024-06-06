@@ -13,12 +13,6 @@ vector<edge> edges[1001];
 typedef struct element{
   int wgh, num, cnt;
 }elm;
-struct cmp{
-  bool operator()(elm &a, elm &b){
-    return a.wgh > b.wgh;
-  }
-};
-priority_queue<elm, vector<elm>, cmp> pq;
 queue<elm> q;
 int dst[1001];
 vector<edge> routes;
@@ -41,7 +35,6 @@ void dijkstra(){
 
   dst[S] = 0;
   q.push({0, S, 0});
-  // pq.push({0, S, 0});
 
   while (q.size()){
     elm e = q.front();

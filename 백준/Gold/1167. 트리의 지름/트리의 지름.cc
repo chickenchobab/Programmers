@@ -1,60 +1,59 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
+#include <vector>
+#define fastio ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
 
 using namespace std;
 
-int n, node, dist;
-typedef pair<int, int> ii;
-vector<ii> g[100001];
-int visited[100001];
+int V;
+typedef pair<int, int> p;
+vector<p> edges[100001];
+int ans;
 
 void input(){
-
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-    cin >> n;
-    int i, j, d;
-    for (int t = 1; t <= n; t ++){
-        cin >> i;
-        while(1){
-            cin >> j;
-            if (j == -1) break;
-            cin >> d;
-            g[i].push_back({j, d});
-        }
+  fastio
+  cin >> V;
+  int a, b, w;
+  for (int i = 1; i <= V; ++ i){
+    cin >> a;
+    while (1){
+      cin >> b;
+      if (b == -1) break;
+      cin >> w;
+      edges[a].push_back({w, b});
     }
-}
-void reset(){
-    for (int i = 1; i <= n; i ++) 
-        visited[i] = 0;
-    dist = 0;
+  }
 }
 
-void dfs(int u, int d){
+int dfs(int prv, int cur, int dst){
+  int fst, scn;
+  fst = 0, scn = 0;
 
-    if (dist < d){
-        dist = d;
-        node = u;
+  for (auto e : edges[cur]){
+    int nxt = e.second;
+    int wgh = e.first;
+    if (prv == nxt) continue;
+
+    int tmp = dfs(cur, nxt, dst + wgh) + wgh;
+    if (tmp >= fst){
+      scn = fst;
+      fst = tmp;
     }
-    visited[u] = 1;
-    for (ii tmp : g[u]){
-        int v = tmp.first;
-        if (visited[v]) continue;
-        dfs(v, d + tmp.second);
+    else if (tmp >= scn){
+      scn = tmp;
     }
+  }
+  ans = max(ans, fst + scn);
+  return fst;
+}
+
+void solve(){
+  dfs(0, 1, 0);
+  cout << ans;
 }
 
 int main(){
-    
-    input();
-    
-    dfs(1, 0);
-    //cout << node << ' ' << dist << '\n';
-    reset();
-    dfs(node, 0);
-    cout << dist;
-
-    return 0;
+  input();
+  solve();
+  return 0;
 }

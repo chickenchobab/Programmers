@@ -1,46 +1,40 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
+#define fastio ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
 
 using namespace std;
-
 int n;
-vector<int> in(100001), post(100001);
-// vector<int> g[100001];
+int inorder[100001], postorder[100001];
 int index[100001];
 
 void input(){
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-    cin >> n;
-    for (int i = 1; i <= n; i ++) {
-        cin >> in[i];
-        index[in[i]] = i;
-    }
-    for (int i = 1; i <= n; i ++) 
-        cin >> post[i];
+  fastio
+  cin >> n;
+  for (int i = 1; i <= n; ++ i){
+    cin >> inorder[i];
+    index[inorder[i]] = i;
+  }
+  for (int i = 1; i <= n; ++ i){
+    cin >> postorder[i];
+  }
 }
 
-void make_tree(int i, int j, int s, int e){
+void make_tree(int s, int e, int p){
+  if (s >= e) return;
+  if (p < 1 || p > n) return;
 
-    if (i > j || s > e) return;
-
-    int root = index[post[e]];
-    int lsize = root - i;
-    int rsize = j - root;
-
-    cout << in[root] << ' ';
-    make_tree(i, index[post[e]] - 1, s, s + lsize - 1); 
-    make_tree(index[post[e]] + 1, j, s + lsize, e - 1);
-    
-    return;
+  int i = index[postorder[p]];
+  cout << postorder[p] << ' ';
+  make_tree(s, i, p - (e - i));
+  make_tree(i + 1, e, p - 1);
 }
 
+void solve(){
+  make_tree(1, n + 1, n);
+}
 
 int main(){
-
-    input();
-    make_tree(1, n, 1, n);
-    return 0;
+  input();
+  solve();
+  return 0;
 }

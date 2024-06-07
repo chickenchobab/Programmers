@@ -27,10 +27,12 @@ void make_tree(int i, int j, int s, int e){
     if (i > j || s > e) return;
 
     int root = index[post[e]];
+    int lsize = root - i;
+    int rsize = j - root;
 
     cout << in[root] << ' ';
-    make_tree(i, index[post[e]] - 1, s, s + (root - i) - 1); 
-    make_tree(index[post[e]] + 1, j, s + (root - i), e - 1);
+    make_tree(i, index[post[e]] - 1, s, s + lsize - 1); 
+    make_tree(index[post[e]] + 1, j, s + lsize, e - 1);
     
     return;
 }
@@ -40,5 +42,5 @@ int main(){
 
     input();
     make_tree(1, n, 1, n);
-    
+    return 0;
 }

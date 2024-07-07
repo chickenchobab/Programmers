@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <vector>
 #include <deque>
-#include <queue>
 #define fastio ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
 #define INF 10000
 using namespace std;
@@ -57,7 +56,6 @@ void bfs(int idx){
   while (dq.size()){
     int i = dq.front().first;
     int j = dq.front().second;
-    // cout << i << ' ' << j << '\n';
     dq.pop_front();
 
     for (int d = 0; d < 4; ++ d){
@@ -79,19 +77,6 @@ void bfs(int idx){
   }
 }
 
-void show(){
-  for (int k = 0; k < 3; ++ k){
-    for (int i = 0; i <= H; ++ i){
-      for (int j = 0; j <= W; ++ j){
-        if (cnt[k][i][j] == -1) cout << "  ";
-        else cout << cnt[k][i][j] << ' ';
-      }
-      cout << '\n';
-    }
-    cout << "\n\n";
-  }
-}
-
 void solve(){
   int ans, sum;
   while (T --){
@@ -107,7 +92,6 @@ void solve(){
         ans = min(ans, sum - 2 * (map[i][j] == '#'));
       }
     }
-    // show();
     cout << ans << '\n';
     
   }

@@ -1,9 +1,11 @@
 #include <string>
 #include <vector>
 #include <stack>
-#include <iostream>
+#include <unordered_map>
 
 using namespace std;
+
+unordered_map<char, char> bracketPair = {{')', '('}, {'}', '{'}, {']', '['}};
 
 bool isRight(string s, int i){
     stack<char> st;
@@ -14,13 +16,9 @@ bool isRight(string s, int i){
         if (ch == '(' || ch == '{' || ch == '[')
             st.push(ch);
         else {
-            if (st.empty()) return false;
-            if (ch == ')' && st.top() != '(') return false;
-            if (ch == ']' && st.top() != '[') return false;
-            if (ch == '}' && st.top() != '{') return false;
+            if (st.empty() || bracketPair[ch] != st.top()) return false;
             st.pop();
         }
-        // st.size() ? cout << st.top() << ' ' : cout << -1 << ' ';
     }
     
     return st.empty();

@@ -1,38 +1,42 @@
 #include <iostream>
+#include <algorithm>
 #include <stack>
-#include <string>
+#define fastio ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
 
 using namespace std;
 
-int main()
-{
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+int n;
+int arr[100001];
 
-    int n; cin>>n;
+void input(){
+  fastio
+  cin >> n;
+}
 
-    stack<int> st;
-    string str="";
-    int* arr = new int[n];
-    for(int i=0;i<n;i++){
-        cin>>arr[i];
+void solve(){
+
+  string ans = "";
+  stack<int> st;
+  int num = 1, tmp;
+
+  for (int i = 1; i <= n; ++i){
+    cin >> tmp;
+    while (st.empty() || st.top() < tmp) {
+      st.push(num++);
+      ans += "+\n";
     }
-
-    int cnt=0;
-
-    for(int i=1;i<=n;i++){
-        st.push(i); str+="+\n";
-        if(!st.empty() && st.top()<arr[cnt]) 
-            continue;
-        while(!st.empty() && st.top()==arr[cnt]){
-            st.pop(); str+="-\n"; cnt++;
-        }
+    if (st.top() == tmp){
+      st.pop();
+      ans += "-\n";
     }
+  }
 
-    if(st.empty()) cout<<str;
-    else cout<<"NO"<<'\n';
+  if (st.empty()) cout << ans;
+  else cout << "NO";
+}
 
-    delete arr;
-    return 0;
+int main(){
+  input();
+  solve();
+  return 0;
 }

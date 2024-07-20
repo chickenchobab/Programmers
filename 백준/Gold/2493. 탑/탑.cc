@@ -1,33 +1,42 @@
-#include<iostream>
-#include<stack>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stack>
+#define fastio ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+
 using namespace std;
 
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+int N;
+int height[500005];
 
-    int N;
-    cin >> N;
+void input(){
+  fastio
+  cin >> N;
+  for (int i = 1; i <= N; ++i){
+    cin >> height[i];
+  }
+}
 
-    stack<pair<int, int>> s;
-    for(int i = 1; i <= N; i++) {
-        int height;
-        cin >> height;
+void solve(){
 
-        while(!s.empty()) {
-            if(s.top().second > height) { // 현재 탑보다 높은 탑을 찾으면 그 탑의 번호 출력
-                cout << s.top().first << " ";
-                break;
-            }
-            s.pop(); // 현재 탑보다 낮은 탑은 스택에서 제거
-        }
+  stack<int> st;
+  vector<int> receiver(N, 0);
 
-        if(s.empty()) { // 스택이 비어있으면 레이저 신호를 수신할 수 있는 탑이 없음을 의미
-            cout << 0 << " ";
-        }
-        
-        s.push(make_pair(i, height)); // 현재 탑 정보(번호, 높이)를 스택에 추가
+  for (int i = N; i >= 1; --i){
+    while (st.size() && height[st.top()] < height[i]){
+      receiver[st.top() - 1] = i;
+      st.pop();
     }
+    st.push(i);
+  }
 
-    return 0;
+  for (int r : receiver){
+    cout << r << ' ';
+  }
+}  
+
+int main(){
+  input();
+  solve();
+  return 0;
 }

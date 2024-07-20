@@ -36,7 +36,6 @@ string solution(int n, int k, vector<string> cmd) {
                 while (x--) k = down[k];
                 break;
             case 'C':
-                answer[k] = 'X';
                 if (up[k] >= 0)
                     down[up[k]] = down[k];
                 if (down[k] < n)
@@ -48,11 +47,16 @@ string solution(int n, int k, vector<string> cmd) {
                 if (deleted.empty()) break;
                 int d = deleted.top();
                 deleted.pop();
-                answer[d] = 'O';
                 if (up[d] >= 0)  down[up[d]] = d;
                 if (down[d] < n) up[down[d]] = d;
                 break;
         }
+    }
+    
+    while (deleted.size()){
+        int d = deleted.top();
+        answer[d] = 'X';
+        deleted.pop();
     }
     
     return answer;

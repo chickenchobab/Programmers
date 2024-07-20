@@ -49,11 +49,6 @@ string solution(int n, int k, vector<string> cmd) {
                 int d = deleted.top();
                 deleted.pop();
                 answer[d] = 'O';
-                int newUp = up[d], newDown = down[d];
-                while (newUp >= 0 && answer[newUp] == 'X') newUp--;
-                while (newDown < n && answer[newDown] == 'X') newDown++;
-                up[d] = newUp;
-                down[d] = newDown;
                 if (up[d] >= 0)  down[up[d]] = d;
                 if (down[d] < n) up[down[d]] = d;
                 break;

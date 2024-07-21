@@ -1,31 +1,22 @@
 #include <string>
 #include <vector>
-#include <queue>
-#include <iostream>
+#include <cmath>
+#include <algorithm>
 
 using namespace std;
 
 vector<int> solution(vector<int> progresses, vector<int> speeds) {
     vector<int> answer;
-    queue<pair<int, int>> q;
     
-    for (int i = 0; i < progresses.size(); ++i){
-        q.push({progresses[i], i});
-    }
-    
-    int prv = 0, cur = 0;
+    int day = 0;
+    int maxDay = 0;
     for (int i = 0; i < progresses.size(); ++i){
         
-        while (!(q.front().second == i && q.front().first >= 100)){
-            q.push({q.front().first + speeds[q.front().second], q.front().second});
-            q.pop();
-            cur ++;
-        }
-        q.pop();
+        day = ceil((100.0 - progresses[i]) / speeds[i]);
+        if (maxDay < day) answer.push_back(1);
+        else answer.back()++;
         
-        if (cur == prv) answer.back()++;
-        else answer.push_back(1);
-        prv = cur;
+        maxDay = max(maxDay, day);
     }
     
     return answer;

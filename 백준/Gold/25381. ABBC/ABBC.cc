@@ -5,41 +5,48 @@
 
 using namespace std;
 
-string S;
+deque<int> pos[3];
 
 void input(){
   fastio
-  cin >> S;
 }
 
 void solve(){
   int removeCnt = 0;
-  int BCnt = 0, CCnt = 0;
   
-  for (int i = S.length() - 1; i >= 0; --i){
-
-    if (S[i] == 'C'){
-      ++CCnt;
-    }
-    else if (S[i] == 'B'){
-      if (CCnt) {
-        ++removeCnt;
-        --CCnt;
-      }
-      else {
-        ++BCnt;
-      }
-    }
-    else {
-      if (BCnt) {
-        ++removeCnt;
-        --BCnt;
-      }
-    }      
+  char ch;
+  for (int i = 0; ; ++i){
+    ch = cin.get();
+    if (ch == '\n') break;
+    pos[ch - 'A'].push_back(i);
   }
 
-  cout << removeCnt;
+  int emptyCnt;
+  while (pos[1].size()){
+    emptyCnt = 0;
+    
+    if (pos[0].empty()) ++emptyCnt;
+    else if (pos[0].back() < pos[1].back()){
+      pos[0].pop_back();
+      pos[1].pop_back();
+      ++removeCnt;
+    }
+    else pos[0].pop_back();
 
+    if (pos[1].empty()) break;
+
+    if (pos[2].empty()) ++emptyCnt;
+    else if (pos[2].front() > pos[1].front()){
+      pos[2].pop_front();
+      pos[1].pop_front();
+      ++removeCnt;
+    }
+    else pos[2].pop_front();
+
+    if (emptyCnt == 2) break;
+  }
+  
+  cout << removeCnt;
 }
 
 int main(){

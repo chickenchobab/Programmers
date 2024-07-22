@@ -16,12 +16,14 @@ vector<int> solution(vector<string> id_list, vector<string> report, int k) {
         idToNum[id_list[i]] = i;
     }
     
+    sort(report.begin(), report.end());
+    report.erase(unique(report.begin(), report.end()), report.end());
+    
     for (int i = 0; i < report.size(); ++i){
        for (int j = 0; j < report[i].size(); ++j){
            if (report[i][j] == ' '){
                int from = idToNum[report[i].substr(0, j)];
                int to = idToNum[report[i].substr(j + 1)];
-               if (find(edges[to].begin(), edges[to].end(), from) != edges[to].end()) break;
                edges[to].push_back(from);
                inDegree[to]++;
                break;

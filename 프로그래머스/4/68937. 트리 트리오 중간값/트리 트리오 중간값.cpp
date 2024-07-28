@@ -6,14 +6,15 @@
 using namespace std;
 
 vector<vector<int>> graph;
-int diameter, point, points[2];
-int fstDist, scnDist;
+int point, diameter, diameterCnt;
+
 
 void findDiameter(int cur, int prv, int cnt){
 
-    if (diameter <= cnt){
+    if (diameter <= cnt){    
         diameter = cnt;
-        points[point] = cur;
+        ++diameterCnt;
+        point = cur;
     }
     
     for (int &nxt : graph[cur]){
@@ -22,35 +23,27 @@ void findDiameter(int cur, int prv, int cnt){
     }
 }
 
-void getDistances(int cur, int prv, int cnt){
-    if (cnt > fstDist){
-        scnDist = fstDist;
-        fstDist = cnt;
-    }
-    else if (cnt > scnDist)
-        scnDist = cnt;
-    
-    for (int &nxt : graph[cur]){
-        if (nxt == prv) continue;
-        getDistances(nxt, cur, cnt + 1);
-    }
-}
-
 int solution(int n, vector<vector<int>> edges) {
+    int answer = 0;
+    
     graph.resize(n + 1);
     for (auto &edge : edges){
         graph[edge[0]].push_back(edge[1]);
         graph[edge[1]].push_back(edge[0]);
     }
     
+    int p1, p2;
     findDiameter(1, 0, 0);
-    ++point;
-    findDiameter(points[0], 0, 0);
+    p1 = point;
+    findDiameter(point, 0, 0);
+    p2 = point;
     
-    getDistances(points[0], 0, 0);
-    int tmp = scnDist;
-    fstDist = 0, scnDist = 0;
-    getDistances(points[1], 0, 0);
+    diameterCnt = 0;
+    findDiameter(p1, 0, 0);
+    diameterCnt == 1 ? answer = max(answer, diameter - 1) : answer = max(answer, diameter);
+    diameterCnt = 0;
+    findDiameter(p2, 0, 0);
+    diameterCnt == 1 ? answer = max(answer, diameter - 1) : answer = max(answer, diameter);
     
-    return max(tmp, scnDist);
+    return answer;
 }

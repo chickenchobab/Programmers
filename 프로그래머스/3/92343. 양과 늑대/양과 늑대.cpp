@@ -16,10 +16,7 @@ void bfs(vector<int> &info){
     q.push({0, info[0], !info[0], 1 << (0 + 1)});
     
     while (q.size()){
-        int cur = q.front().x;
-        int wolf = q.front().wolf;
-        int sheep = q.front().sheep;
-        int visit = q.front().visit;
+        auto [cur, wolf, sheep, visit] = q.front();
         q.pop();
         
         answer = max(answer, sheep);
@@ -27,6 +24,7 @@ void bfs(vector<int> &info){
         for (int nxt : graph[cur]){
             if ((visit & (1 << (nxt + 1))) == 0 && info[nxt] + wolf >= !info[nxt] + sheep) continue;
             if (visited[nxt][visit | (1 << (nxt + 1))]) continue;
+            
             visited[nxt][visit | (1 << (nxt + 1))] = 1;
             if (visit & (1 << (nxt + 1))) 
                 q.push({nxt, wolf, sheep, visit});

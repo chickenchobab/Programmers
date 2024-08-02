@@ -12,7 +12,7 @@ typedef struct NODE{
 int di[] = {1, -1, 0, 0}, dj[] = {0, 0, 1, -1};
 struct cmp{
     bool operator()(node &a, node &b){
-        return a.dst < b.dst;
+        return a.dst > b.dst;
     }
 };
 vector<vector<vector<int>>> distances;

@@ -33,7 +33,7 @@ void dijkstra(vector<vector<int>> &board){
         auto [i, j, dst, dir] = pq.top();
         pq.pop();
         
-        // if (distances[i][j] < dst) continue;
+        if (distances[i][j][dir] < dst) continue;
         
         for (int newdir = 0; newdir < 4; ++newdir){
             int ni = i + di[newdir];

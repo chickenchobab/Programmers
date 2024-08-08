@@ -1,49 +1,37 @@
+#include <string>
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
 vector<int> answer;
 vector<int> ryan(11, 0);
-int maxScore = -1;
+int maxScoreGap;
 
-int calcScoreDiff(const vector<int> &apeach) {
-  int scoreApeach = 0;
-  int scoreLion = 0;
-
-  for(int i = 0; i < 11; ++i) {
-    if(apeach[i] == 0 && ryan[i] == 0) continue;
-    if(apeach[i] >= ryan[i]) scoreApeach += 10 - i;
-    else scoreLion += 10 - i;
-  }
-
-  return scoreLion - scoreApeach;
-}
-
-void dfs(const vector<int> &apeach, int score, int arrow) {
-  if(score == -1 || arrow == 0) {
-    ryan[10] = arrow;
-    int scoreDiff = calcScoreDiff(apeach);
-    if(scoreDiff > 0 && maxScore < scoreDiff) {
-      maxScore = scoreDiff;
-      answer = ryan;
+void shootArrow(vector<int> &apeach, int target, int arrow, int ryanScore, int apeachScore){
+    if (target == -1){
+        if (ryanScore - apeachScore > maxScoreGap){
+            maxScoreGap = ryanScore - apeachScore;
+            ryan.back() = arrow;
+            answer = ryan;
+        }
+        return;
     }
-    ryan[10] = 0;
-    return;
-  }
-
-  if(arrow > apeach[score]) {
-    ryan[score] = apeach[score] + 1;
-    dfs(apeach, score - 1, arrow - apeach[score] - 1);
-    ryan[score] = 0;
-  }
-
-  dfs(apeach, score - 1, arrow);
+    
+    // win this stage
+    if (arrow > apeach[target]){
+        ryan[target] = apeach[target] + 1;
+        shootArrow(apeach, target - 1, arrow - apeach[target] - 1, ryanScore + 10 - target, apeachScore);
+        ryan[target] = 0;
+    }
+    
+    // do not shoot
+    shootArrow(apeach, target - 1, arrow, ryanScore, apeachScore + (10 - target) * (bool)apeach[target]);
 }
 
 vector<int> solution(int n, vector<int> info) {
-  dfs(info, 10, n);
-
-  if(maxScore == -1) answer.push_back(-1);
-
-  return answer;
+    shootArrow(info, 10, n, 0, 0);
+    if (!maxScoreGap) 
+        answer.push_back(-1);
+    return answer;
 }

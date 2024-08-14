@@ -1,35 +1,25 @@
 #include <string>
 #include <vector>
-#include <stack>
 #include <algorithm>
-// #include <sstream>
 
 using namespace std;
 
 vector<int> solution(string s) {
-    stack<char> st;
     vector<int> counts(100001, 0);
     vector<int> numbers;
     
+    string numStr = "";
     for (char &ch : s){
-        if (ch == '}'){
-            while (st.size() && st.top() != '{'){
-                int num = 0;
-                int digit = 1;
-                while (st.size() && isdigit(st.top())){
-                    num += (st.top() - '0') * digit;
-                    digit *= 10;
-                    st.pop();
-                }
-                if (st.top() == ',') st.pop();
-                if (!num) continue;
-                
-                if (!counts[num]) numbers.push_back(num);
-                counts[num]++;
-            }
-            st.pop();
+        if (isdigit(ch)) {
+            numStr += ch;
         }
-        else st.push(ch);
+        else {
+            if (numStr.empty()) continue;
+            int num = stoi(numStr);
+            if (!counts[num]) numbers.push_back(num);
+            counts[num]++;
+            numStr.clear(); 
+        }
     }
     
     sort(numbers.begin(), numbers.end(), [counts](int &a, int &b){

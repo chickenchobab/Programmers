@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int transCnt, zeroCnt;
+vector<int> answer(2, 0);
 
 string decToBin(int num){
     string s = "";
@@ -21,17 +21,14 @@ void binaryTransform(string &s){
     for (char &ch : s){
         if (ch == '0') ++cnt;
     }
-    ++transCnt;
-    zeroCnt += cnt;
+    answer[0]++;
+    answer[1] += cnt;
     s = decToBin(len - cnt);
 }
 
 vector<int> solution(string s) {
-    vector<int> answer;
     while (s.length() != 1){
         binaryTransform(s);
     }
-    answer.push_back(transCnt);
-    answer.push_back(zeroCnt);
     return answer;
 }

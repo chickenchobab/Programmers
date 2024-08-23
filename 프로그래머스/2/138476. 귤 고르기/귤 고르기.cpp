@@ -12,12 +12,13 @@ int solution(int k, vector<int> tangerine) {
     for (int &t : tangerine){
         ++count[t];
     }
-    vector<pair<int, int>> counts(count.begin(), count.end());
-    sort(counts.begin(), counts.end(), [](auto &a, auto &b){
-        return a.second > b.second;
-    });
+    vector<int> counts;
+    for (auto &p : count){
+        counts.push_back(p.second);
+    }
+    sort(counts.rbegin(), counts.rend());
     for (int i = 0; i < counts.size(); ++i){
-        k -= min(k, counts[i].second);
+        k -= min(k, counts[i]);
         if (!k) return i + 1;
     }
     return counts.size();
